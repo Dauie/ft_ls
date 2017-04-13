@@ -7,8 +7,15 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
+typedef	enum	s_dftype
+{
+	FILE,
+	DIR
+}				t_dftype;
+
 typedef struct	s_stat
 {
+	t_dftype	type;
 	nlink_t		nlink;
 	uid_t		uid;
 	gid_t		gid;
@@ -19,11 +26,11 @@ typedef struct	s_stat
 
 typedef struct		s_node
 {
+	t_stat			*data;
 	unsigned int	key;
 	struct s_node	*left;
 	struct s_node	*right;
 }					t_node;
-
 
 void 		addtnode(t_node	**tree, unsigned int key);
 int			treesearch(t_node *tree, unsigned int key);
