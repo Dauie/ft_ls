@@ -9,7 +9,7 @@
 
 typedef	enum	s_dftype
 {
-	FILE,
+	FIL,
 	DIR
 }				t_dftype;
 
