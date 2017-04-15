@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printtree.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:20 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/12 19:08:35 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/04/13 19:59:14 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,10 @@ void 	printtree(t_node *tree)
 		return ;
 	if (tree->left)
 		printtree(tree->left);
-	ft_printf("key: %d", tree->key);
+	ft_printf("%s\t", tree->name);
 	if (tree->right)
 		printtree(tree->right);
+
 }
 
 void 	revprinttree(t_node *tree)
@@ -29,7 +30,7 @@ void 	revprinttree(t_node *tree)
 		return ;
 	if (tree->right)
 		revprinttree(tree->left);
-	ft_printf("key: %d", tree->key);
+	ft_printf("|%s  |", tree->name);
 	if (tree->left)
 		revprinttree(tree->right);
 }
