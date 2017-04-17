@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/13 19:48:35 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/04/16 14:57:41 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 #include "ft_ls.h"
 
-void 		addtnode(t_node	**tree, char *name)
+void 		ls_addtnode(t_node	**tree, char *name)
 {
 	t_node	*elem;
 	t_node	*ntmp;

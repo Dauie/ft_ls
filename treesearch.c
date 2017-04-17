@@ -6,25 +6,25 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:42 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/13 19:31:17 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/04/16 15:00:51 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-// int		treesearch(t_node *tree, unsigned int key)
-// {
-// 	t_node	*tmp;
-//
-// 	tmp = tree;
-// 	while (tmp)
-// 	{
-// 		if (key == tmp->key)
-// 			return (1);
-// 		if (key > tmp->key)
-// 			tmp = tmp->right;
-// 		else
-// 			tmp = tmp->left;
-// 	}
-// 	return (0);
-// }
+int		ls_treesearch(t_node *tree, char *name)
+{
+	t_node	*tmp;
+
+	tmp = tree;
+	while (tmp)
+	{
+		if (name == tmp->name)
+			return (1);
+		if (ft_strcmp(name, tmp->name) > 0)
+			tmp = tmp->right;
+		else
+			tmp = tmp->left;
+	}
+	return (0);
+}

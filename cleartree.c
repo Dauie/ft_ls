@@ -6,13 +6,13 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:07:26 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/13 16:37:09 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/04/16 15:03:33 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-void cleartree(t_node **tree)
+void ls_cleartree(t_node **tree)
 {
 	t_node		*tmp;
 
@@ -20,9 +20,9 @@ void cleartree(t_node **tree)
 	if (!tree)
 		return ;
 	if (tmp->left)
-		cleartree(&tmp->left);
+		ls_cleartree(&tmp->left);
 	if (tmp->right)
-		cleartree(&tmp->right);
+		ls_cleartree(&tmp->right);
 	free(tmp);
 	tree = NULL;
 }

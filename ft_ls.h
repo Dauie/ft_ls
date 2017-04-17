@@ -48,6 +48,7 @@ typedef struct		s_node
 typedef struct		s_lsnfo
 {
 	char			**args;
+	char			**dirs;
 	t_blean			l_flg;
 	t_blean			A_flg;
 	t_blean			a_flg;
@@ -56,10 +57,15 @@ typedef struct		s_lsnfo
 	t_blean			t_flg;
 }					t_lsnfo;
 
-void 				addtnode(t_node	**tree, char *name);
-// int					treesearch(t_node *tree, unsigned int key);
-void 				printtree(t_node *tree);
-void 				revprinttree(t_node *tree);
-void 				cleartree(t_node **tree);
+int 				ls_tickargs(t_lsnfo *db, char *argstr);
+int 				ls_vrfydir(t_lsnfo *db, char *argstr);
+int 				ls_anaargs(t_lsnfo *db);
+void 				ls_addtnode(t_node	**tree, char *name);
+int					ls_treesearch(t_node *tree, char *name);
+void 				ls_printtree(t_node *tree);
+void 				ls_revprinttree(t_node *tree);
+void 				ls_cleartree(t_node **tree);
+int					ls_isarg(int c);
+int					ls_ftlsreg(void);
 
 # endif
