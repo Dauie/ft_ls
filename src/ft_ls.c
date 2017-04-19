@@ -6,61 +6,19 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/16 18:29:46 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/04/18 12:36:20 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
+#include "../incl/ft_ls.h"
 
-/*void 	manage_lsattrib(t_node *tree)
+void 			manage_lsattrib(t_lsnfo *db)
 {
-	if (tree->a_flg == TRUE && tree->A_flg == TRUE)
-		tree->A_flg = FALSE;
-}*/
-
-static void 	ls_initdb(t_lsnfo *db)
-{
-	db->args = NULL;
-	db->dirs = NULL;
-	db->l_flg = FALSE;
-	db->A_flg = FALSE;
-	db->a_flg = FALSE;
-	db->R_flg = FALSE;
-	db->r_flg = FALSE;
-	db->t_flg = FALSE;
+	if (db->a_flg == TRUE && db->A_flg == TRUE)
+		db->A_flg = FALSE;
 }
 
-int 				ls_tickargs(t_lsnfo *db, char *argstr)
-{
-	int				i;
-
-	i = -1;
-	argstr++;
-	while (argstr[++i])
-	{
-		if (ls_isarg(argstr[i]) == 1)
-			db->a_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 2)
-			db->A_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 3)
-			db->r_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 4)
-			db->R_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 5)
-			db->l_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 6)
-			db->t_flg = TRUE;
-		else
-		{
-			ft_printf("ft_ls: illegal option -- %c\n", argstr[i]);
-			ft_printf("usage: ft_ls [-lAaRr] [file ...]");
-			return (0);
-		}
-	}
-	return (1);
-}
-
-int ls_vrfydir(t_lsnfo *db, char *argstr)
+int 		ls_vrfydir(t_lsnfo *db, char *argstr)
 {
 	DIR		*chkdir;
 	char	**tmp;
@@ -72,16 +30,19 @@ int ls_vrfydir(t_lsnfo *db, char *argstr)
 	}
 	closedir(chkdir);
 	tmp = db->dirs;
-	db->dirs = ft_tbladdl(db->dirs, argstr); //memleak
+	if (!(db->dirs = ft_tbladdl(db->dirs, argstr)))
+	 	return (ft_puterror(-3));
+	db->dirc++;
+	ft_printf("%d\n", db->dirc);
 	ft_puttbl(db->dirs);
 	if (tmp)
 		ft_tbldel(tmp);
 	return (1);
 }
 
-int 				ls_anaargs(t_lsnfo *db)
+int 		ls_anaargs(t_lsnfo *db)
 {
-	int				i;
+	int		i;
 
 	i = -1;
 	while (db->args[++i])
@@ -101,24 +62,54 @@ int 				ls_anaargs(t_lsnfo *db)
 	return (1);
 }
 
-int					ls_ftlsreg(void)
+int 			ls_chkdirnam(t_lsnfo *db, char *dirnam)
 {
+	if (db->a_flg == TRUE)
+		return (0);
+	if (db->a_flg == FALSE && db->A_flg == FALSE && dirnam[0] == '.')
+		return (1);
+	if (db->A_flg == TRUE && (ft_strcmp(".", dirnam) == 0))
+		return (1);
+	if (db->A_flg == TRUE && (ft_strcmp("..", dirnam) == 0))
+		return (1);
+	return (0);
+}
 
-	t_node			*tree;
+int				ls_reg(t_lsnfo *db)
+{
+	t_node		*tree;
 	struct dirent	*sd;
-	DIR				*ddir;
+	DIR			*ddir;
 
 	if (!(ddir = opendir(".")))
 		return (ft_puterror(-4));
 	tree = NULL;
 	while ((sd = readdir(ddir)) != NULL)
-		ls_addtnode(&tree, sd->d_name);
-	ls_printtree(tree);
+	{
+		if (ls_chkdirnam(db, sd->d_name))
+			continue ;
+		if (db->t_flg == TRUE)
+			ls_addtnodet(&tree, sd->d_name, sd->d_type, db);
+		else
+			ls_addtnoden(&tree, sd->d_name, sd->d_type, db);
+	}
+	if (db->r_flg == TRUE)
+		ls_revprinttree(tree);
+	else
+		ls_printtree(tree);
 	closedir(ddir);
 	return (0);
 }
 
-int					main(int ac, char **av)
+int			ls_start(t_lsnfo *db)
+{
+	manage_lsattrib(db);
+	if (db->dirc == 0)
+		ls_reg(db);
+	return (1);
+}
+
+int				main(int ac, char **av)
 {
 	t_lsnfo			db;
 
@@ -129,7 +120,6 @@ int					main(int ac, char **av)
 		if (!(ls_anaargs(&db)))
 			return (1);
 	}
-	else
-		ls_ftlsreg();
+	ls_start(&db);
 	return (0);
 }

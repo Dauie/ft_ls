@@ -1,14 +1,20 @@
-NAME = ft_ls.a
+NAME = ft_ls
 
 CC = gcc
 
+CCFLAGS = -Wall -Werror -Wextra -O3 -L./libft -lftprintf 
+
+SRC = src/addtnode.c src/cleartree.c src/ft_ls.c src/lserror.c src/lsinit.c \
+		src/lsis.c src/lstick.c src/printtree.c src/treesearch.c
 OBJ = *.o
 
-ARCHIVE = ar rc
+RM = -rm -fr
 
-INDEX = ranlib
+HEADER = ft_ls.h
 
-HEADER =
+$(NAME):
+		$(MAKE) -C libft/
+		$(CC) $(CCFLAGS) $(SRC)
 
 clean:
 		$(RM) $(OBJ)
