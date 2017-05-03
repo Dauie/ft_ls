@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:42 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/18 12:11:32 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/03 14:29:49 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,30 @@ int		ls_treesearch(t_node *tree, char *name)
 			tmp = tmp->left;
 	}
 	return (0);
+}
+
+unsigned int	ls_diramnt(t_node *tree)
+{
+	if (!tree)
+		return (0);
+	if (S_ISDIR(tree->stat.st_mode))
+		return (1);
+	else
+		return ((ls_diramnt(tree->left) + ls_diramnt(tree->right)));
+}
+
+void		ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t *inx)
+{
+
+	if (!tree)
+		return ;
+	if (tree->left)
+		ls_dirtotbl(tree->left, db, av, inx);
+	if (S_ISDIR(tree->stat.st_mode) && (ft_strcmp(db->cdir, tree->name) != 0))
+	{
+		av[*inx] = ft_strjoin(db->cdir, tree->name);
+		inx += 1;
+	}
+	if (tree->left)
+		ls_dirtotbl(tree->left, db, av, inx);
 }

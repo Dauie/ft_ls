@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/04/18 20:38:34 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/03 14:18:11 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,45 +14,26 @@
 
 #include "../incl/ft_ls.h"
 
-int		ls_getmeta(t_node *elem, char *name)
-{
-	int			chk;
-	struct stat hold;
-
-	chk = 0;
-	chk = lstat(name, &hold);
-	if (!chk)
-		return (-1);
-	elem->data.uid = hold.st_uid;
-	elem->data.gid = hold.st_gid;
-	elem->data.size = hold.st_size;
-	elem->data.atime = (long)hold.st_atime;
-	elem->data.mtime = (long)hold.st_mtimespec.tv_sec;
-	elem->data.mntime = (long)hold.st_mtimespec.tv_nsec;
-	return (1);
-}
-
-static t_node *prep_addnode (char *name, char type, t_lsnfo *db)
+static t_node *prep_addnode (char *name)
 {
 	t_node *elem;
+
+	int			chk;
 
 	if (!(elem = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	ls_initnode(elem);
-	elem->name = ft_strdup(name);
-	if (db->t_flg == TRUE)
-			if (!(ls_getmeta(elem, name)))
-				return (NULL);
-	elem->type = type;
+	ft_strcpy(elem->name,name);
+	chk = lstat(name, &elem->stat);
 	return (elem);
 }
 
-void 		ls_addtnoden(t_node **tree, char *name, char type, t_lsnfo *db)
+void 		ls_addtnoden(t_node **tree, char *name)
 {
 	t_trinode	tri;
 
 	tri.ttmp = *tree;
-	tri.elem = prep_addnode(name, type, db);
+	tri.elem = prep_addnode(name);
 	if (tri.ttmp)
 	{
 		while (tri.ttmp)
@@ -76,18 +57,18 @@ void 		ls_addtnoden(t_node **tree, char *name, char type, t_lsnfo *db)
 		*tree = tri.elem;
 }
 
-void 		ls_addtnodet(t_node **tree, char *name, char type, t_lsnfo *db)
+void 		ls_addtnodet(t_node **tree, char *name)
 {
 	t_trinode	tri;
 
 	tri.ttmp = *tree;
-	tri.elem = prep_addnode(name, type, db);
+	tri.elem = prep_addnode(name);
 	if (tri.ttmp)
 	{
 		while (tri.ttmp)
 		{
 			tri.ntmp = tri.ttmp;
-			if (tri.ttmp && tri.elem->data.mtime < tri.ttmp->data.mtime)
+			if (tri.ttmp && tri.elem->stat.st_mtime < tri.ttmp->stat.st_mtime)
 			{
 				tri.ttmp = tri.ttmp->left;
 				if (!tri.ttmp)
