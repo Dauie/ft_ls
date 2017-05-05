@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:42 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/03 14:29:49 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/04 16:40:46 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void		ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t *inx)
 		return ;
 	if (tree->left)
 		ls_dirtotbl(tree->left, db, av, inx);
-	if (S_ISDIR(tree->stat.st_mode) && (ft_strcmp(db->cdir, tree->name) != 0))
+	if (S_ISDIR(tree->stat.st_mode) && (ft_strcmp(db->cdir, tree->name) != 0) && ft_strcmp(tree->name, "."))
 	{
 		av[*inx] = ft_strjoin(db->cdir, tree->name);
 		inx += 1;
