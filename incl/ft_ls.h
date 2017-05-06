@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/03 14:16:41 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/05 18:43:09 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,9 +85,9 @@ void				ls_printtree(t_node *tree);
 void				ls_revprinttree(t_node *tree);
 int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
-void				ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t *inx);
+void				ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t inx);
 int					main(int ac, char **av);
-int					ls_preprecurs(t_lsnfo *db, t_node *tree);
+int					ls_preprecurs(t_lsnfo *db);
 
 
 # endif

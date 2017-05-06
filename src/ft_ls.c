@@ -6,22 +6,22 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/03 14:35:09 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/05 20:13:12 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-void 			manage_lsattrib(t_lsnfo *db)
+void			manage_lsattrib(t_lsnfo *db)
 {
 	if (db->a_flg == TRUE && db->A_flg == TRUE)
 		db->A_flg = FALSE;
 }
 
-int 		ls_vrfydir(t_lsnfo *db, char *argstr)
+int				ls_vrfydir(t_lsnfo *db, char *argstr)
 {
-	DIR		*chkdir;
-	char	**tmp;
+	DIR			*chkdir;
+	char		**tmp;
 
 	if (!(chkdir = opendir(argstr)))
 	{
@@ -40,33 +40,57 @@ int 		ls_vrfydir(t_lsnfo *db, char *argstr)
 
 /* You need to make sure '.' && '..' are not added to av*/
 /* You need to make sure that the current directory is not added to the newest av as well.*/
-
-char		**ls_craftav(t_node *tree, t_lsnfo *db)
+char				**ls_getdirlist(char *dir)
 {
-	char	**res;
-	size_t	len;
-	size_t	i;
+	char			**tmp;
+	char			**res;
+	DIR				*p_dir;
+	struct dirent	*sd;
+	struct stat		st;
 
-	i = 1;
-	len = 0;
-	len = ls_diramnt(tree);
-	if (!(res = (char **)ft_memalloc(sizeof(char *) * (len + 1))))
+	res = NULL;
+	tmp = NULL;
+	if (!(p_dir = opendir(dir)))
 		return (NULL);
-	if (!(res[0] = ft_strdup("ft_db")))
-		return (NULL);
-	if (!(res[1] = ft_strdup(db->type)))
-		return (NULL);
-	ls_dirtotbl(tree, db, res, &i);
+	while ((sd = readdir(p_dir)) != NULL)
+	{	
+		lstat(sd->d_name, &st);
+		if (S_ISDIR(st.st_mode) && ft_strcmp(sd->d_name, ".") != 0 && ft_strcmp(sd->d_name, "..") != 0)
+		{
+			tmp = res;
+			res = ft_tbladdl(res, sd->d_name);
+		}
+	}
 	return (res);
 }
 
-int			ls_preprecurs(t_lsnfo *db, t_node *tree)
+int				ls_recurse(t_lsnfo *db, char *dir)
 {
-	char	**av;
+	char		**args;
+
+	args = NULL;
+	if (!(args = (char **)ft_memalloc(sizeof(char *) * 3)))
+		return (-1);
+	args[0] = ft_strdup("ft_db");
+	args[1] = ft_strdup(db->type);
+	args[2] = ft_strdup(dir);
+	main(ft_tbllen(args), args);
+	return (0);
+}
+
+int				ls_preprecurs(t_lsnfo *db)
+{
+	char		**dirs;
+	size_t		i;
 	
-	av = NULL;
-	av = ls_craftav(tree, db);
-	main(ft_tbllen(av), av);
+	i = -1;
+	dirs = NULL;
+	if (!(dirs = ls_getdirlist(db->cdir)))
+		return (-1);
+	while (dirs[++i])
+		ls_recurse(db, dirs[i]);
+	if (dirs)
+		ft_tbldel(dirs);
 	return (0);
 }
 
@@ -130,7 +154,7 @@ int					list_dir(t_lsnfo *db, char *dir)
 		ls_printtree(tree);
 	ft_putchar('\n');
 	if (db->R_flg == TRUE)
-		ls_preprecurs(db, tree);
+		ls_preprecurs(db);
 	closedir(ddir);
 	return (0);
 }
@@ -143,14 +167,14 @@ int			ls_start(t_lsnfo *db)
 	manage_lsattrib(db);
 	if (db->dirc == 0)
 	{
-		ft_strcpy(db->cdir, ".");
+		ft_strcpy(db->cdir, "./");
 		list_dir(db, ".");
 		}
 	else
 		while(db->dirs[++i])
 		{
 			ft_bzero(db->cdir, 1024);
-			ft_strcpy(db->dirs[i], db->cdir);
+			ft_strcpy(db->cdir, db->dirs[i]);
 			ft_printf("%s:\n", db->dirs[i]);
 			list_dir(db, db->dirs[i]);
 			ft_putstr("\n");
@@ -160,9 +184,9 @@ int			ls_start(t_lsnfo *db)
 	return (1);
 }
 
-int					main(int ac, char **av)
+int				main(int ac, char **av)
 {
-	t_lsnfo			db;
+	t_lsnfo		db;
 	
 	ls_initdb(&db);
 	if (ac > 1)
