@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   printtree.c                                        :+:      :+:    :+:   */
+/*   ls_puttree.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:20 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/10 16:48:23 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 09:51:07 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,26 @@ void 	ls_revprinttree(t_node *tree)
 	if (tree->left)
 		ls_revprinttree(tree->left);
 }
+
 /*[permissions] [sym links] [user] [group] [mo.da.yr] [time] [name]*/
-void 	ls_printtreel(t_node *tree)
+void 	ls_printtreel(t_node *tree, t_lsnfo *info)
 {
 	if (!tree)
 		return ;
 	if (tree->left)
-		ls_printtree(tree->left);
-	ft_printf("%s\t", tree->name);
-	
+		ls_printtreel(tree->left, info);
+	ls_putmeta(tree, info);
 	if (tree->right)
-		ls_printtree(tree->right);
+		ls_printtreel(tree->right, info);
+}
+
+void 	ls_revprinttreel(t_node *tree, t_lsnfo *info)
+{
+	if (!tree)
+		return ;
+	if (tree->right)
+		ls_revprinttreel(tree->right, info);
+	ls_putmeta(tree, info);
+	if (tree->left)
+		ls_revprinttreel(tree->left, info);
 }

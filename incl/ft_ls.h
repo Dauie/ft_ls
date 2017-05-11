@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/10 19:08:11 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 09:51:31 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ typedef struct		s_lsnfo
 
 int					ls_start(t_lsnfo *db);
 int					ls_reg(t_lsnfo *db);
+void				ls_putmeta(t_node *node, t_lsnfo *info);
 int					ls_chkdirnam(t_lsnfo *db, char *dirnam);
 int					ls_anaargs(t_lsnfo *db);
 int					ls_vrfydir(t_lsnfo *db, char *argstr);
@@ -95,6 +96,7 @@ void				ls_initrnode(t_rnode *node);
 int					ls_isarg(int c);
 int			 		ls_tickargs(t_lsnfo *db, char *argstr);
 void				ls_printtree(t_node *tree);
+void				ls_printtreel(t_node *tree, t_lsnfo *info);
 void				ls_revprinttree(t_node *tree);
 int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
@@ -102,6 +104,8 @@ char				*ls_dirjoin(char const *s1, char const *s2);
 void				ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t inx);
 int					main(int ac, char **av);
 int					ls_preprecurs(t_lsnfo *db);
+void				ls_revprinttreel(t_node *tree, t_lsnfo *info);
+
 
 
 # endif

@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/10 19:13:58 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 09:59:45 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ t_rnode		*ls_getdirlist(char *dir, t_lsnfo *db)
 		if (S_ISDIR((mode_t)st.st_mode))
 		{
 			if (sd->d_name[0] == '.' && db->a_flg == FALSE)
+				continue;
+			if (ft_strcmp(sd->d_name, ".") == 0 || ft_strcmp(sd->d_name, "..") == 0)
 				continue;
 			ls_addrnoden(&r_tree, ls_dirjoin(db->cdir, sd->d_name));
 		}
@@ -130,6 +132,25 @@ int 			ls_chkdirnam(t_lsnfo *db, char *dirnam)
 
 // chop this bitch up and find a way to implement printing properly.
 
+void				manage_print(t_node *tree, t_lsnfo *db)
+{
+	if (db->r_flg == TRUE)
+	{
+		if (db->l_flg == TRUE)
+			ls_revprinttreel(tree, db);
+		else
+			ls_revprinttree(tree);
+	}
+	else
+	{
+		if (db->l_flg == TRUE)
+			ls_printtreel(tree, db);
+		else
+			ls_printtree(tree);
+	}
+	ft_putstr("\n\n");
+}
+
 int					list_dir(t_lsnfo *db, char *dir)
 {
 	t_node			*tree;
@@ -148,11 +169,7 @@ int					list_dir(t_lsnfo *db, char *dir)
 		else
 			ls_addtnoden(&tree, sd->d_name);
 	}
-	if (db->r_flg == TRUE)
-		ls_revprinttree(tree);
-	else
-		ls_printtree(tree);
-	ft_putstr("\n\n");
+	manage_print(tree, db);
 	if (db->R_flg == TRUE)
 		ls_preprecurs(db);
 	closedir(ddir);
