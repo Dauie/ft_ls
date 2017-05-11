@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/05 20:13:12 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/10 19:13:58 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,59 +38,57 @@ int				ls_vrfydir(t_lsnfo *db, char *argstr)
 	return (1);
 }
 
-/* You need to make sure '.' && '..' are not added to av*/
-/* You need to make sure that the current directory is not added to the newest av as well.*/
-char				**ls_getdirlist(char *dir)
+t_rnode		*ls_getdirlist(char *dir, t_lsnfo *db)
 {
-	char			**tmp;
-	char			**res;
 	DIR				*p_dir;
 	struct dirent	*sd;
 	struct stat		st;
+	t_rnode			*r_tree;
 
-	res = NULL;
-	tmp = NULL;
+	r_tree = NULL;
 	if (!(p_dir = opendir(dir)))
 		return (NULL);
 	while ((sd = readdir(p_dir)) != NULL)
-	{	
-		lstat(sd->d_name, &st);
-		if (S_ISDIR(st.st_mode) && ft_strcmp(sd->d_name, ".") != 0 && ft_strcmp(sd->d_name, "..") != 0)
+	{
+		lstat(ls_dirjoin(db->cdir,sd->d_name), &st);
+		if (S_ISDIR((mode_t)st.st_mode))
 		{
-			tmp = res;
-			res = ft_tbladdl(res, sd->d_name);
+			if (sd->d_name[0] == '.' && db->a_flg == FALSE)
+				continue;
+			ls_addrnoden(&r_tree, ls_dirjoin(db->cdir, sd->d_name));
 		}
 	}
-	return (res);
+	return (r_tree);
 }
 
-int				ls_recurse(t_lsnfo *db, char *dir)
+int				ls_recurse(t_lsnfo *db, t_rnode *dirs)
 {
 	char		**args;
 
+	if(dirs->left)
+		ls_recurse(db, dirs->left);
 	args = NULL;
 	if (!(args = (char **)ft_memalloc(sizeof(char *) * 3)))
 		return (-1);
-	args[0] = ft_strdup("ft_db");
+	args[0] = ft_strdup("ft_ls");
 	args[1] = ft_strdup(db->type);
-	args[2] = ft_strdup(dir);
-	main(ft_tbllen(args), args);
+	args[2] = ft_strdup(dirs->name);
+	main(3, args);
+	if (dirs->right)
+		ls_recurse(db,dirs->right);
 	return (0);
 }
 
 int				ls_preprecurs(t_lsnfo *db)
 {
-	char		**dirs;
+	t_rnode		*dirs;
 	size_t		i;
-	
+
 	i = -1;
 	dirs = NULL;
-	if (!(dirs = ls_getdirlist(db->cdir)))
+	if (!(dirs = ls_getdirlist(db->cdir, db)))
 		return (-1);
-	while (dirs[++i])
-		ls_recurse(db, dirs[i]);
-	if (dirs)
-		ft_tbldel(dirs);
+	ls_recurse(db, dirs);
 	return (0);
 }
 
@@ -130,6 +128,8 @@ int 			ls_chkdirnam(t_lsnfo *db, char *dirnam)
 	return (0);
 }
 
+// chop this bitch up and find a way to implement printing properly.
+
 int					list_dir(t_lsnfo *db, char *dir)
 {
 	t_node			*tree;
@@ -152,7 +152,7 @@ int					list_dir(t_lsnfo *db, char *dir)
 		ls_revprinttree(tree);
 	else
 		ls_printtree(tree);
-	ft_putchar('\n');
+	ft_putstr("\n\n");
 	if (db->R_flg == TRUE)
 		ls_preprecurs(db);
 	closedir(ddir);
@@ -162,24 +162,21 @@ int					list_dir(t_lsnfo *db, char *dir)
 int			ls_start(t_lsnfo *db)
 {
 	size_t	i;
-	
+
 	i = -1;
 	manage_lsattrib(db);
 	if (db->dirc == 0)
 	{
-		ft_strcpy(db->cdir, "./");
+		ft_strcpy(db->cdir, ".");
 		list_dir(db, ".");
 		}
 	else
 		while(db->dirs[++i])
 		{
-			ft_bzero(db->cdir, 1024);
+			ft_bzero(db->cdir, MXNAMLEN);
 			ft_strcpy(db->cdir, db->dirs[i]);
 			ft_printf("%s:\n", db->dirs[i]);
 			list_dir(db, db->dirs[i]);
-			ft_putstr("\n");
-			if (db->dirs[i + 1])
-				ft_putstr("\n");
 		}
 	return (1);
 }
@@ -187,7 +184,7 @@ int			ls_start(t_lsnfo *db)
 int				main(int ac, char **av)
 {
 	t_lsnfo		db;
-	
+
 	ls_initdb(&db);
 	if (ac > 1)
 	{

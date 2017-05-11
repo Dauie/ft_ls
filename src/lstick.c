@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:08:57 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/03 14:18:39 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/09 19:42:37 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,17 +20,17 @@ int 			ls_tickargs(t_lsnfo *db, char *argstr)
 	argstr++;
 	while (argstr[++i])
 	{
-		if (ls_isarg(argstr[i]) == 1)
+		if (argstr[i] == 'a')
 			db->a_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 2)
+		else if (argstr[i] == 'A')
 			db->A_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 3)
+		else if (argstr[i] == 'r')
 			db->r_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 4)
+		else if (argstr[i] == 'R')
 			db->R_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 5)
+		else if (argstr[i] == 'l')
 			db->l_flg = TRUE;
-		else if (ls_isarg(argstr[i]) == 6)
+		else if (argstr[i] == 't')
 			db->t_flg = TRUE;
 		else
 		{

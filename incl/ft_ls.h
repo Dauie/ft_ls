@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/05 18:43:09 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/10 19:08:11 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,24 +23,34 @@
 #include "../libft/incl/put.h"
 #include "../libft/incl/printf.h"
 #include <dirent.h>
+#include <time.h>
+#include <uuid/uuid.h>
+#include <pwd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 
-typedef struct		s_istat
+# define MXNAMLEN 1024
+# define MXTYPLEN 42
+
+typedef struct		s_rnode
 {
-	uid_t			uid;
-	gid_t			gid;
-	off_t			size;
-	time_t			atime;
-	time_t			mtime;
-	time_t			mntime;
-}					t_istat;
+	char			name[MXNAMLEN];
+	struct s_rnode	*left;
+	struct s_rnode	*right;
+}					t_rnode;
+
+typedef struct		s_trirnode
+{
+	t_rnode			*elem;
+	t_rnode			*ntmp;
+	t_rnode			*ttmp;
+}					t_trirnode;
 
 typedef struct		s_node
 {
-	char			cdir[1024];
-	char 			name[1024];
+	char			cdir[MXNAMLEN];
+	char 			name[MXNAMLEN];
 	struct stat		stat;
 	struct s_node	*left;
 	struct s_node	*right;
@@ -48,9 +58,9 @@ typedef struct		s_node
 
 typedef struct		s_trinode
 {
-	t_node	*elem;
-	t_node	*ntmp;
-	t_node	*ttmp;
+	t_node			*elem;
+	t_node			*ntmp;
+	t_node			*ttmp;
 }					t_trinode;
 
 typedef struct		s_lsnfo
@@ -58,8 +68,8 @@ typedef struct		s_lsnfo
 	char			**args;
 	char			**dirs;
 	size_t			dirc;
-	char			type[12];
-	char			cdir[1024];
+	char			type[MXTYPLEN];
+	char			cdir[MXNAMLEN];
 	t_blean			l_flg;
 	t_blean			A_flg;
 	t_blean			a_flg;
@@ -76,15 +86,19 @@ int					ls_vrfydir(t_lsnfo *db, char *argstr);
 void				manage_lsattrib(t_lsnfo *db);
 void				ls_addtnoden(t_node **tree, char *name);
 void				ls_addtnodet(t_node **tree, char *name);
+void				ls_addrnoden(t_rnode **tree, char *name);
 void				ls_cleartree(t_node **tree);
+void				ls_clearrtree(t_rnode **tree);
 void				ls_initdb(t_lsnfo *db);
 void				ls_initnode(t_node *node);
+void				ls_initrnode(t_rnode *node);
 int					ls_isarg(int c);
 int			 		ls_tickargs(t_lsnfo *db, char *argstr);
 void				ls_printtree(t_node *tree);
 void				ls_revprinttree(t_node *tree);
 int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
+char				*ls_dirjoin(char const *s1, char const *s2);
 void				ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t inx);
 int					main(int ac, char **av);
 int					ls_preprecurs(t_lsnfo *db);

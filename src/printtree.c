@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:20 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/03 14:24:51 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/10 16:48:23 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,16 @@ void 	ls_revprinttree(t_node *tree)
 	ft_printf("%s  ", tree->name);
 	if (tree->left)
 		ls_revprinttree(tree->left);
+}
+/*[permissions] [sym links] [user] [group] [mo.da.yr] [time] [name]*/
+void 	ls_printtreel(t_node *tree)
+{
+	if (!tree)
+		return ;
+	if (tree->left)
+		ls_printtree(tree->left);
+	ft_printf("%s\t", tree->name);
+	
+	if (tree->right)
+		ls_printtree(tree->right);
 }
