@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:29:07 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 09:48:56 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 10:51:40 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void		ls_putpermtype(struct stat *st)
 		ft_putchar('s');
 	else if (st->st_mode == S_IFIFO)
 		ft_putchar('p');
-	else
-		ft_putchar('-');
 }
 
 void		ls_putperm(struct stat *st)
@@ -44,22 +42,22 @@ void		ls_putperm(struct stat *st)
 	ft_putchar((st->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((st->st_mode & S_IWOTH) ? 'w' : '-');
 	ft_putchar((st->st_mode & S_IXOTH) ? 'r' : '-');
-	ft_putchar(' ');
 }
 
-
-void		ls_putmeta(t_node *node, t_lsnfo *info)
+//get the size going, then a blksize static var may work.
+void				ls_putmeta(t_node *node, t_lsnfo *info)
 {
-	struct stat st;
-	struct passwd *pw;
-	char	time[MXNAMLEN];
+	struct stat		st;
+	struct passwd	*pw;
+	struct group	*gp;
+	char			time[MXNAMLEN];
 	
 	lstat(ls_dirjoin(info->cdir, node->name), &st);
 	ft_bzero(time, MXNAMLEN);
 	ls_putpermtype(&st);
 	ls_putperm(&st);
 	pw = getpwuid(st.st_uid);
-	//ft_printf("%lld ", st->st_nlink);
-	//ls_putusr(st);
-	ft_printf("%2lld % 5s %.24s  %s\n", st.st_nlink, pw->pw_name, ctime(&st.st_mtime), node->name);
+	gp = getgrgid(st.st_gid);
+	ft_printf("%2lld % 5s % 8s %.24s  %s\n", st.st_nlink,
+			pw->pw_name, gp->gr_name, ctime(&st.st_mtime), node->name);
 }

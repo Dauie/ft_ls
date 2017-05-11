@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 09:51:31 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 10:35:52 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 #include <dirent.h>
 #include <time.h>
 #include <uuid/uuid.h>
+#include <grp.h>
 #include <pwd.h>
 #include <sys/types.h>
 #include <sys/stat.h>

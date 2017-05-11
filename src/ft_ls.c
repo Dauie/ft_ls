@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 09:59:45 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 10:51:44 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,8 +129,6 @@ int 			ls_chkdirnam(t_lsnfo *db, char *dirnam)
 		return (1);
 	return (0);
 }
-
-// chop this bitch up and find a way to implement printing properly.
 
 void				manage_print(t_node *tree, t_lsnfo *db)
 {
