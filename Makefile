@@ -4,8 +4,9 @@ CC = gcc
 
 CCFLAGS = -Wall -Werror -Wextra -g -O0 -L./libft -lftprintf
 
-SRC = src/addtnode.c src/cleartree.c src/ft_ls.c src/lserror.c src/lsinit.c \
-		src/lsis.c src/lstick.c src/printtree.c src/treesearch.c
+SRC = src/ls_addnode.c src/ls_clrtree.c src/ft_ls.c src/ls_init.c \
+		src/ls_tick.c src/ls_puttree.c src/ls_treesrch.c src/ls_lmeta.c \
+		src/ls_dirjoin.c
 OBJ = *.o
 
 RM = -rm -fr
@@ -13,7 +14,7 @@ RM = -rm -fr
 HEADER = ft_ls.h
 
 $(NAME):
-		$(MAKE) -C libft/
+		$(MAKE) -C ./libft/
 		$(CC) $(CCFLAGS) $(SRC)
 
 clean:

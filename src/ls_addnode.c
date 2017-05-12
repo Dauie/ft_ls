@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   addtnode.c                                         :+:      :+:    :+:   */
+/*   ls_addnode.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/09 18:13:46 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/11 20:58:46 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void 		ls_addtnodet(t_node **tree, char *name)
 		while (tri.ttmp)
 		{
 			tri.ntmp = tri.ttmp;
-			if (tri.ttmp && tri.elem->stat.st_mtime < tri.ttmp->stat.st_mtime)
+			if (tri.ttmp && tri.elem->stat.st_mtimespec.tv_nsec >
+					tri.ttmp->stat.st_mtimespec.tv_nsec)
 			{
 				tri.ttmp = tri.ttmp->left;
 				if (!tri.ttmp)

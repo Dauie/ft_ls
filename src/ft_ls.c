@@ -6,22 +6,24 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 10:51:44 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/12 12:56:57 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-void			manage_lsattrib(t_lsnfo *db)
+void				manage_lsattrib(t_lsnfo *db)
 {
 	if (db->a_flg == TRUE && db->A_flg == TRUE)
 		db->A_flg = FALSE;
 }
 
-int				ls_vrfydir(t_lsnfo *db, char *argstr)
+
+// allocation - being free, but verify
+int					ls_vrfydir(t_lsnfo *db, char *argstr)
 {
-	DIR			*chkdir;
-	char		**tmp;
+	DIR				*chkdir;
+	char			**tmp;
 
 	if (!(chkdir = opendir(argstr)))
 	{
@@ -38,34 +40,39 @@ int				ls_vrfydir(t_lsnfo *db, char *argstr)
 	return (1);
 }
 
-t_rnode		*ls_getdirlist(char *dir, t_lsnfo *db)
+t_rnode				*ls_getdirlist(char *dir, t_lsnfo *db)
 {
 	DIR				*p_dir;
 	struct dirent	*sd;
 	struct stat		st;
 	t_rnode			*r_tree;
+	char			*name;
 
 	r_tree = NULL;
 	if (!(p_dir = opendir(dir)))
 		return (NULL);
 	while ((sd = readdir(p_dir)) != NULL)
 	{
-		lstat(ls_dirjoin(db->cdir,sd->d_name), &st);
+		name = ls_dirjoin(db->cdir, sd->d_name);
+		lstat(name, &st);
 		if (S_ISDIR((mode_t)st.st_mode))
 		{
 			if (sd->d_name[0] == '.' && db->a_flg == FALSE)
 				continue;
 			if (ft_strcmp(sd->d_name, ".") == 0 || ft_strcmp(sd->d_name, "..") == 0)
 				continue;
-			ls_addrnoden(&r_tree, ls_dirjoin(db->cdir, sd->d_name));
+					ls_addrnoden(&r_tree, ls_dirjoin(db->cdir, sd->d_name));
 		}
+		ft_strdel(&name);
 	}
 	return (r_tree);
 }
 
-int				ls_recurse(t_lsnfo *db, t_rnode *dirs)
+
+//allocation - had trouble freeing due to it being a recursive function.
+int					ls_recurse(t_lsnfo *db, t_rnode *dirs)
 {
-	char		**args;
+	char			**args;
 
 	if(dirs->left)
 		ls_recurse(db, dirs->left);
@@ -81,22 +88,25 @@ int				ls_recurse(t_lsnfo *db, t_rnode *dirs)
 	return (0);
 }
 
-int				ls_preprecurs(t_lsnfo *db)
+
+//allocation - make sure tree is being freed 
+int					ls_preprecurs(t_lsnfo *db)
 {
-	t_rnode		*dirs;
-	size_t		i;
+	t_rnode			*dirs;
+	size_t			i;
 
 	i = -1;
 	dirs = NULL;
 	if (!(dirs = ls_getdirlist(db->cdir, db)))
 		return (-1);
 	ls_recurse(db, dirs);
+	//ls_clrrtree(dirs);
 	return (0);
 }
 
-int 		ls_anaargs(t_lsnfo *db)
+int					ls_anaargs(t_lsnfo *db)
 {
-	int		i;
+	int				i;
 
 	i = -1;
 	while (db->args[++i])
@@ -113,11 +123,10 @@ int 		ls_anaargs(t_lsnfo *db)
 				return (0);
 		}
 	}
-	ft_tbldel(db->args);
 	return (1);
 }
 
-int 			ls_chkdirnam(t_lsnfo *db, char *dirnam)
+int					ls_chkdirnam(t_lsnfo *db, char *dirnam)
 {
 	if (db->a_flg == TRUE)
 		return (0);
@@ -149,6 +158,7 @@ void				manage_print(t_node *tree, t_lsnfo *db)
 	ft_putstr("\n\n");
 }
 
+// allocation -- need to free main tree
 int					list_dir(t_lsnfo *db, char *dir)
 {
 	t_node			*tree;
@@ -171,12 +181,13 @@ int					list_dir(t_lsnfo *db, char *dir)
 	if (db->R_flg == TRUE)
 		ls_preprecurs(db);
 	closedir(ddir);
+	//ls_clrtree(tree);
 	return (0);
 }
 
-int			ls_start(t_lsnfo *db)
+int					ls_start(t_lsnfo *db)
 {
-	size_t	i;
+	size_t			i;
 
 	i = -1;
 	manage_lsattrib(db);
@@ -196,9 +207,9 @@ int			ls_start(t_lsnfo *db)
 	return (1);
 }
 
-int				main(int ac, char **av)
+int					main(int ac, char **av)
 {
-	t_lsnfo		db;
+	t_lsnfo			db;
 
 	ls_initdb(&db);
 	if (ac > 1)
@@ -208,5 +219,6 @@ int				main(int ac, char **av)
 			return (1);
 	}
 	ls_start(&db);
+	ls_freedb(&db);
 	return (0);
 }

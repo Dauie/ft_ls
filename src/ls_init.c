@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lsinit.c                                           :+:      :+:    :+:   */
+/*   ls_init.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:08:52 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/09 19:37:41 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/12 12:30:50 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void 	ls_initdb(t_lsnfo *db)
 	db->R_flg = FALSE;
 	db->r_flg = FALSE;
 	db->t_flg = FALSE;
+}
+
+void	ls_freedb(t_lsnfo *db)
+{
+	if (db->args)
+		ft_tbldel(db->args);
+	if (db->dirs)
+		ft_tbldel(db->dirs);
 }
 
 void ls_initnode(t_node *node)
