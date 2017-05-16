@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/12 12:31:34 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 14:49:47 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,15 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-# define MXNAMLEN 1024
+# define MXDIRLEN 1024
+# define MXNAMLEN 256
 # define MXTYPLEN 42
+
+typedef struct		s_cduo
+{
+	char *uno;
+	char *dos;
+}					t_cduo;
 
 typedef struct		s_rnode
 {
@@ -67,7 +74,7 @@ typedef struct		s_trinode
 typedef struct		s_lsnfo
 {
 	char			**args;
-	char			**dirs;
+	t_rnode			*dirs;
 	size_t			dirc;
 	char			type[MXTYPLEN];
 	char			cdir[MXNAMLEN];
@@ -79,33 +86,28 @@ typedef struct		s_lsnfo
 	t_blean			t_flg;
 }					t_lsnfo;
 
+int					main(int ac, char **av);
+int					list_dir(t_lsnfo *db, char *dir);
 int					ls_start(t_lsnfo *db);
-int					ls_reg(t_lsnfo *db);
-void				ls_putmeta(t_node *node, t_lsnfo *info);
-int					ls_chkdirnam(t_lsnfo *db, char *dirnam);
-int					ls_anaargs(t_lsnfo *db);
-int					ls_vrfydir(t_lsnfo *db, char *argstr);
-void				manage_lsattrib(t_lsnfo *db);
 void				ls_addtnoden(t_node **tree, char *name);
 void				ls_addtnodet(t_node **tree, char *name);
 void				ls_addrnoden(t_rnode **tree, char *name);
-void				ls_cleartree(t_node **tree);
-void				ls_clearrtree(t_rnode **tree);
+void				ls_clrtree(t_node **tree);
+void				ls_clrrtree(t_rnode **tree);
+char				*ls_dirjoin(const char *s1, const  char *s2);
 void				ls_initdb(t_lsnfo *db);
+void				ls_freedb(t_lsnfo *db);
 void				ls_initnode(t_node *node);
 void				ls_initrnode(t_rnode *node);
-int					ls_isarg(int c);
-int			 		ls_tickargs(t_lsnfo *db, char *argstr);
-void				ls_printtree(t_node *tree);
-void				ls_printtreel(t_node *tree, t_lsnfo *info);
-void				ls_revprinttree(t_node *tree);
+void				ls_getblksz(size_t *sz, t_node *tree, t_lsnfo *info);
+void				ls_putmeta(t_node *node, t_lsnfo *info);
+void				ls_manageput(t_node *tree, t_lsnfo *db);
+t_rnode				*ls_getdirlist(char *dir, t_lsnfo *db);
+int					ls_recurse(t_lsnfo *db, t_rnode *dirs);
+int					ls_preprecurs(t_lsnfo *db);
 int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
-char				*ls_dirjoin(char const *s1, char const *s2);
-void				ls_dirtotbl(t_node *tree, t_lsnfo *db, char **av, size_t inx);
-int					main(int ac, char **av);
-int					ls_preprecurs(t_lsnfo *db);
-void				ls_revprinttreel(t_node *tree, t_lsnfo *info);
-void				ls_freedb(t_lsnfo *db);
-
+void				ls_dirtree(t_node *tree, t_lsnfo *db, char **av, size_t inx);
+int					ls_chkdirnam(t_lsnfo *db, char *dirnam);
+int					ls_anaargs(t_lsnfo *db);
 # endif

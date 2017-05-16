@@ -6,39 +6,37 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 20:58:46 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 15:11:18 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/*42 - Robert Wyatt Lutt - ft_ls*/
-
 #include "../incl/ft_ls.h"
 
-static t_node *prep_addnode(char *name)
+static t_node	*prep_addnode(char *name)
 {
-	t_node *elem;
-
+	t_node		*elem;
 	int			chk;
+
 	if (!(elem = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	ls_initnode(elem);
-	ft_strcpy(elem->name,name);
+	ft_strcpy(elem->name, name);
 	chk = lstat(name, &elem->stat);
 	return (elem);
 }
 
-static t_rnode *prep_addrnode(char *name)
+static t_rnode	*prep_addrnode(char *name)
 {
-	t_rnode *elem;
+	t_rnode		*elem;
 
 	if (!(elem = (t_rnode *)ft_memalloc(sizeof(t_rnode))))
 		return (NULL);
 	ls_initrnode(elem);
-	ft_strcpy(elem->name,name);
+	ft_strcpy(elem->name, name);
 	return (elem);
 }
 
-void 		ls_addtnoden(t_node **tree, char *name)
+void			ls_addtnoden(t_node **tree, char *name)
 {
 	t_trinode	tri;
 
@@ -67,7 +65,7 @@ void 		ls_addtnoden(t_node **tree, char *name)
 		*tree = tri.elem;
 }
 
-void 		ls_addtnodet(t_node **tree, char *name)
+void			ls_addtnodet(t_node **tree, char *name)
 {
 	t_trinode	tri;
 
@@ -78,7 +76,7 @@ void 		ls_addtnodet(t_node **tree, char *name)
 		while (tri.ttmp)
 		{
 			tri.ntmp = tri.ttmp;
-			if (tri.ttmp && tri.elem->stat.st_mtimespec.tv_nsec >
+			if (tri.elem->stat.st_mtimespec.tv_nsec >
 					tri.ttmp->stat.st_mtimespec.tv_nsec)
 			{
 				tri.ttmp = tri.ttmp->left;
@@ -97,7 +95,7 @@ void 		ls_addtnodet(t_node **tree, char *name)
 		*tree = tri.elem;
 }
 
-void 		ls_addrnoden(t_rnode **tree, char *name)
+void			ls_addrnoden(t_rnode **tree, char *name)
 {
 	t_trirnode	tri;
 

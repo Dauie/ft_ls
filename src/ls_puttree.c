@@ -6,13 +6,13 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:20 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 09:51:07 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 11:59:41 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-void 	ls_printtree(t_node *tree)
+static void		ls_printtree(t_node *tree)
 {
 	if (!tree)
 		return ;
@@ -23,7 +23,7 @@ void 	ls_printtree(t_node *tree)
 		ls_printtree(tree->right);
 }
 
-void 	ls_revprinttree(t_node *tree)
+static void		ls_revprinttree(t_node *tree)
 {
 	if (!tree)
 		return ;
@@ -34,8 +34,7 @@ void 	ls_revprinttree(t_node *tree)
 		ls_revprinttree(tree->left);
 }
 
-/*[permissions] [sym links] [user] [group] [mo.da.yr] [time] [name]*/
-void 	ls_printtreel(t_node *tree, t_lsnfo *info)
+static void		ls_printtreel(t_node *tree, t_lsnfo *info)
 {
 	if (!tree)
 		return ;
@@ -46,7 +45,7 @@ void 	ls_printtreel(t_node *tree, t_lsnfo *info)
 		ls_printtreel(tree->right, info);
 }
 
-void 	ls_revprinttreel(t_node *tree, t_lsnfo *info)
+static void		ls_revprinttreel(t_node *tree, t_lsnfo *info)
 {
 	if (!tree)
 		return ;
@@ -55,4 +54,31 @@ void 	ls_revprinttreel(t_node *tree, t_lsnfo *info)
 	ls_putmeta(tree, info);
 	if (tree->left)
 		ls_revprinttreel(tree->left, info);
+}
+
+void			ls_manageput(t_node *tree, t_lsnfo *db)
+{
+	size_t	sz;
+
+	sz = 0;
+	if (db->l_flg == TRUE)
+	{
+		ls_getblksz(&sz, tree, db);
+		ft_printf("total %lld\n", sz);
+	}
+	if (db->r_flg == TRUE)
+	{
+		if (db->l_flg == TRUE)
+			ls_revprinttreel(tree, db);
+		else
+			ls_revprinttree(tree);
+	}
+	else
+	{
+		if (db->l_flg == TRUE)
+			ls_printtreel(tree, db);
+		else
+			ls_printtree(tree);
+	}
+	ft_putchar('\n');
 }

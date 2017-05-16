@@ -6,13 +6,13 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/09 19:09:17 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 16:16:21 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 14:50:44 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-char		*ls_dirjoin(char const *s1, char const *s2)
+char			*ls_dirjoin(const char *s1, const char *s2)
 {
 	char	*ns;
 	int		i;

@@ -6,31 +6,51 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:29:07 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/11 16:19:52 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 15:18:21 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-void		ls_putpermtype(struct stat *st)
+void				ls_getblksz(size_t *sz, t_node *tree, t_lsnfo *info)
 {
-	if (st->st_mode & S_IFREG)
-		ft_putchar('-');
-	else if (st->st_mode & S_IFDIR)
-		ft_putchar('d');
-	else if (st->st_mode & S_IFLNK)
-		ft_putchar('l');
-	else if (st->st_mode & S_IFBLK)
-		ft_putchar('b');
-	else if (st->st_mode & S_IFCHR)
-		ft_putchar('c');
-	else if (st->st_mode & S_IFSOCK)
-		ft_putchar('s');
-	else if (st->st_mode & S_IFIFO)
-		ft_putchar('p');
+	struct stat		st;
+	char			*name;
+
+	if (!tree)
+		return ;
+	if (tree->left)
+		ls_getblksz(sz, tree->left, info);
+	if (tree->right)
+		ls_getblksz(sz, tree->right, info);
+	if (!(name = ls_dirjoin(info->cdir, tree->name)))
+		return ;
+	lstat(name, &st);
+	*sz += st.st_blocks;
+	ft_strdel(&name);
 }
 
-void		ls_putperm(struct stat *st)
+void				ls_putpermtype(struct stat *st)
+{
+	if (S_ISREG(st->st_mode))
+		ft_putchar('-');
+	else if (S_ISDIR(st->st_mode))
+		ft_putchar('d');
+	else if (S_ISLNK(st->st_mode))
+		ft_putchar('l');
+	else if (S_ISBLK(st->st_mode))
+		ft_putchar('b');
+	else if (S_ISCHR(st->st_mode))
+		ft_putchar('c');
+	else if (S_ISSOCK(st->st_mode))
+		ft_putchar('s');
+	else if (S_ISFIFO(st->st_mode))
+		ft_putchar('p');
+	else
+		ft_putchar('-');
+}
+
+void				ls_putperm(struct stat *st)
 {
 	ls_putpermtype(st);
 	ft_putchar((st->st_mode & S_IRUSR) ? 'r' : '-');
@@ -45,23 +65,24 @@ void		ls_putperm(struct stat *st)
 	ft_putchar(' ');
 }
 
-//get the size going, then a blksize static var may work.
 void				ls_putmeta(t_node *node, t_lsnfo *info)
 {
 	struct stat		st;
 	struct passwd	*pw;
 	struct group	*gp;
-	char			*tmp;
+	t_cduo			strs;
 	char			time[MXNAMLEN];
 	
-	lstat(ls_dirjoin(info->cdir, node->name), &st);
-	ft_bzero(time, MXNAMLEN);
-	tmp = ctime(&st.st_mtime);
-	ft_strcpy(time, &tmp[4]);
-	ft_strdel(&tmp);
+	if (!(strs.uno = ls_dirjoin(info->cdir, node->name)))
+		return ;
+	lstat(strs.uno, &st);
+	ft_strdel(&strs.uno);
+	strs.dos = ctime(&st.st_mtime);
+	ft_strcpy(time, &strs.dos[4]);
+	ft_strdel(&strs.dos);
 	ls_putperm(&st);
 	pw = getpwuid(st.st_uid);
 	gp = getgrgid(st.st_gid);
-	ft_printf("%3lld % 6s %9s % 6lld  %.12s  %s\n", st.st_nlink, pw->pw_name,
-			gp->gr_name, st.st_size , time, node->name);
+	ft_printf("%3lld % 6s %9s % 7lld  %.12s  %s\n", st.st_nlink, pw->pw_name,
+			gp->gr_name, st.st_size, time, node->name);
 }

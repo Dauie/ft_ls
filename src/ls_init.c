@@ -6,13 +6,13 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:08:52 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/12 12:30:50 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 13:33:43 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-void 	ls_initdb(t_lsnfo *db)
+void	ls_initdb(t_lsnfo *db)
 {
 	db->args = NULL;
 	db->dirs = NULL;
@@ -32,10 +32,10 @@ void	ls_freedb(t_lsnfo *db)
 	if (db->args)
 		ft_tbldel(db->args);
 	if (db->dirs)
-		ft_tbldel(db->dirs);
+		ls_clrrtree(&db->dirs);
 }
 
-void ls_initnode(t_node *node)
+void	ls_initnode(t_node *node)
 {
 	ft_bzero(node->name, MXNAMLEN);
 	ft_bzero(node->cdir, MXNAMLEN);
@@ -43,13 +43,9 @@ void ls_initnode(t_node *node)
 	node->right = NULL;
 }
 
-void ls_initrnode(t_rnode *node)
+void	ls_initrnode(t_rnode *node)
 {
 	ft_bzero(node->name, MXNAMLEN);
 	node->left = NULL;
 	node->right = NULL;
 }
-
-
-
-
