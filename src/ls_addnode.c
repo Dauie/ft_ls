@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 15:11:18 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 22:23:13 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,12 @@
 static t_node	*prep_addnode(char *name)
 {
 	t_node		*elem;
-	int			chk;
 
 	if (!(elem = (t_node *)ft_memalloc(sizeof(t_node))))
 		return (NULL);
 	ls_initnode(elem);
 	ft_strcpy(elem->name, name);
-	chk = lstat(name, &elem->stat);
+	lstat(name, &elem->stat);
 	return (elem);
 }
 

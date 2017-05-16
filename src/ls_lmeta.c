@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:29:07 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 15:18:21 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 22:46:48 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,13 +76,12 @@ void				ls_putmeta(t_node *node, t_lsnfo *info)
 	if (!(strs.uno = ls_dirjoin(info->cdir, node->name)))
 		return ;
 	lstat(strs.uno, &st);
-	ft_strdel(&strs.uno);
 	strs.dos = ctime(&st.st_mtime);
 	ft_strcpy(time, &strs.dos[4]);
-	ft_strdel(&strs.dos);
 	ls_putperm(&st);
 	pw = getpwuid(st.st_uid);
 	gp = getgrgid(st.st_gid);
 	ft_printf("%3lld % 6s %9s % 7lld  %.12s  %s\n", st.st_nlink, pw->pw_name,
 			gp->gr_name, st.st_size, time, node->name);
+	free(strs.uno);
 }

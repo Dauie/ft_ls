@@ -6,12 +6,12 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 18:23:52 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/15 23:14:20 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
-
+#include <unistd.h>
 int					list_dir(t_lsnfo *db, char *dir)
 {
 	t_node			*tree;
