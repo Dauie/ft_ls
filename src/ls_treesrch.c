@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:42 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 14:51:22 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 11:51:46 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,16 @@ unsigned int	ls_diramnt(t_node *tree)
 		return (1);
 	else
 		return ((ls_diramnt(tree->left) + ls_diramnt(tree->right)));
+}
+
+unsigned int	ls_getmbramt(t_rnode *tree)
+{
+	if (!tree)
+		return (0);
+	if (tree)
+		return (1);
+	else
+		return ((ls_getmbramt(tree->left) + ls_getmbramt(tree->right)));
 }
 
 void			ls_dirtree(t_node *tree, t_lsnfo *db, char **av, size_t inx)

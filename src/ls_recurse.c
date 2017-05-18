@@ -6,47 +6,55 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:33:41 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 23:10:52 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 15:35:34 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
+int					ls_initnfo(t_lsdir *nfo, char *dir)
+{
+	nfo->r_tree = NULL;
+	nfo->name = NULL;
+	if (!(nfo->p_dir = opendir(dir)))
+		return (-1);
+	else
+		return (1);
+}
 
+void				ls_closenfo(t_lsdir *nfo)
+{
+	ft_strdel(&nfo->name);
+	closedir(nfo->p_dir);
+}
 
 t_rnode				*ls_getdirlist(char *dir, t_lsnfo *db)
 {
-	DIR				*p_dir;
-	struct dirent	*sd;
-	struct stat		st;
-	t_rnode			*r_tree;
-	char			*name;
+	t_lsdir		nfo;
 
-	r_tree = NULL;
-	name = NULL;
-	if (!(p_dir = opendir(dir)))
-		return (NULL);
-	while ((sd = readdir(p_dir)) != NULL)
+	ls_initnfo(&nfo, dir);
+	while ((nfo.sd = readdir(nfo.p_dir)) != NULL)
 	{
-		if (name)
-			free(name);
-		if (!(name = ls_dirjoin(db->cdir, sd->d_name)))
+		if (nfo.name)
+			ft_strdel(&nfo.name);
+		if (!(nfo.name = ls_dirjoin(db->cdir, nfo.sd->d_name)))
 			return (NULL);
-		lstat(name, &st);
-		if (S_ISDIR((mode_t)st.st_mode))
+		lstat(nfo.name, &nfo.st);
+		if (S_ISDIR((mode_t)nfo.st.st_mode))
 		{
-			if (sd->d_name[0] == '.' && db->a_flg == FALSE)
+			if (nfo.sd->d_name[0] == '.' && db->a_flg == FALSE)
 				continue;
-			if (ft_strcmp(sd->d_name, ".") == 0 ||
-					ft_strcmp(sd->d_name, "..") == 0)
+			if (ft_strcmp(nfo.sd->d_name, ".") == 0 ||
+				ft_strcmp(nfo.sd->d_name, "..") == 0)
 				continue;
-			ls_addrnoden(&r_tree, name);
+			if (db->t_flg == TRUE)
+				ls_addrnodet(&nfo.r_tree, nfo.name);
+			else
+				ls_addrnoden(&nfo.r_tree, nfo.name);
 		}
 	}
-	if (name)
-		free(name);
-	closedir(p_dir);
-	return (r_tree);
+	ls_closenfo(&nfo);
+	return (nfo.r_tree);
 }
 
 int					ls_recurse(t_lsnfo *db, t_rnode *dirs)
@@ -76,6 +84,7 @@ int					ls_preprecurs(t_lsnfo *db)
 	dirs = NULL;
 	if (!(dirs = ls_getdirlist(db->cdir, db)))
 		return (-1);
+	db->nl = (ls_getmbramt(dirs) - 1);
 	ls_recurse(db, dirs);
 	ls_clrrtree(&dirs);
 	return (0);

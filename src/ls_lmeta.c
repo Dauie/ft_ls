@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:29:07 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 22:46:48 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 15:36:28 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void				ls_getblksz(size_t *sz, t_node *tree, t_lsnfo *info)
 	ft_strdel(&name);
 }
 
-void				ls_putpermtype(struct stat *st)
+static void				ls_putpermtype(struct stat *st)
 {
 	if (S_ISREG(st->st_mode))
 		ft_putchar('-');
@@ -50,7 +50,7 @@ void				ls_putpermtype(struct stat *st)
 		ft_putchar('-');
 }
 
-void				ls_putperm(struct stat *st)
+static void				ls_putperm(struct stat *st)
 {
 	ls_putpermtype(st);
 	ft_putchar((st->st_mode & S_IRUSR) ? 'r' : '-');
@@ -65,6 +65,16 @@ void				ls_putperm(struct stat *st)
 	ft_putchar(' ');
 }
 
+static void				ls_putlink(char *path)
+{
+	char			buf[MXNAMLEN];
+
+	if (!(readlink(path, buf, MXNAMLEN)))
+		return ;
+	ft_putstr(" -> ");
+	ft_putstr(buf);
+}
+
 void				ls_putmeta(t_node *node, t_lsnfo *info)
 {
 	struct stat		st;
@@ -72,7 +82,7 @@ void				ls_putmeta(t_node *node, t_lsnfo *info)
 	struct group	*gp;
 	t_cduo			strs;
 	char			time[MXNAMLEN];
-	
+
 	if (!(strs.uno = ls_dirjoin(info->cdir, node->name)))
 		return ;
 	lstat(strs.uno, &st);
@@ -81,7 +91,10 @@ void				ls_putmeta(t_node *node, t_lsnfo *info)
 	ls_putperm(&st);
 	pw = getpwuid(st.st_uid);
 	gp = getgrgid(st.st_gid);
-	ft_printf("%3lld % 6s %9s % 7lld  %.12s  %s\n", st.st_nlink, pw->pw_name,
+	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", st.st_nlink, pw->pw_name,
 			gp->gr_name, st.st_size, time, node->name);
-	free(strs.uno);
+	if (S_ISLNK(st.st_mode))
+		ls_putlink(strs.uno);
+	ft_putchar('\n');
+	ft_strdel(&strs.uno);
 }

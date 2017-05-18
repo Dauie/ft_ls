@@ -6,34 +6,11 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 22:23:13 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/17 15:07:57 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
-
-static t_node	*prep_addnode(char *name)
-{
-	t_node		*elem;
-
-	if (!(elem = (t_node *)ft_memalloc(sizeof(t_node))))
-		return (NULL);
-	ls_initnode(elem);
-	ft_strcpy(elem->name, name);
-	lstat(name, &elem->stat);
-	return (elem);
-}
-
-static t_rnode	*prep_addrnode(char *name)
-{
-	t_rnode		*elem;
-
-	if (!(elem = (t_rnode *)ft_memalloc(sizeof(t_rnode))))
-		return (NULL);
-	ls_initrnode(elem);
-	ft_strcpy(elem->name, name);
-	return (elem);
-}
 
 void			ls_addtnoden(t_node **tree, char *name)
 {
@@ -46,7 +23,7 @@ void			ls_addtnoden(t_node **tree, char *name)
 		while (tri.ttmp)
 		{
 			tri.ntmp = tri.ttmp;
-			if (tri.ttmp && ft_strcmp(name, tri.ttmp->name) < 0)
+			if (tri.ttmp && ft_strcmp(tri.elem->name, tri.ntmp->name) < 0)
 			{
 				tri.ttmp = tri.ttmp->left;
 				if (!tri.ttmp)
@@ -75,8 +52,7 @@ void			ls_addtnodet(t_node **tree, char *name)
 		while (tri.ttmp)
 		{
 			tri.ntmp = tri.ttmp;
-			if (tri.elem->stat.st_mtimespec.tv_nsec >
-					tri.ttmp->stat.st_mtimespec.tv_nsec)
+			if (ls_cmptime(&tri.elem->stat, &tri.ntmp->stat) < 0)
 			{
 				tri.ttmp = tri.ttmp->left;
 				if (!tri.ttmp)
@@ -106,6 +82,35 @@ void			ls_addrnoden(t_rnode **tree, char *name)
 		{
 			tri.ntmp = tri.ttmp;
 			if (tri.ttmp && ft_strcmp(name, tri.ttmp->name) < 0)
+			{
+				tri.ttmp = tri.ttmp->left;
+				if (!tri.ttmp)
+					tri.ntmp->left = tri.elem;
+			}
+			else
+			{
+				tri.ttmp = tri.ttmp->right;
+				if (!tri.ttmp)
+					tri.ntmp->right = tri.elem;
+			}
+		}
+	}
+	else
+		*tree = tri.elem;
+}
+
+void			ls_addrnodet(t_rnode **tree, char *name)
+{
+	t_trirnode	tri;
+
+	tri.ttmp = *tree;
+	tri.elem = prep_addrnode(name);
+	if (tri.ttmp)
+	{
+		while (tri.ttmp)
+		{
+			tri.ntmp = tri.ttmp;
+			if (ls_cmptime(&tri.elem->stat, &tri.ntmp->stat) < 0)
 			{
 				tri.ttmp = tri.ttmp->left;
 				if (!tri.ttmp)

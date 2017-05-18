@@ -6,12 +6,12 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 23:14:20 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 15:32:57 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
-#include <unistd.h>
+
 int					list_dir(t_lsnfo *db, char *dir)
 {
 	t_node			*tree;
@@ -31,6 +31,8 @@ int					list_dir(t_lsnfo *db, char *dir)
 			ls_addtnoden(&tree, sd->d_name);
 	}
 	ls_manageput(tree, db);
+	db->dirc--;
+	ft_putstr("\n");
 	if (db->R_flg == TRUE)
 		ls_preprecurs(db);
 	closedir(ddir);
@@ -39,7 +41,7 @@ int					list_dir(t_lsnfo *db, char *dir)
 	return (0);
 }
 
-void		ls_traverse(t_rnode *dirs, t_lsnfo *db)
+void				ls_traverse(t_rnode *dirs, t_lsnfo *db)
 {
 	if (dirs->left)
 		ls_traverse(dirs->left, db);
@@ -78,5 +80,6 @@ int					main(int ac, char **av)
 	}
 	ls_start(&db);
 	ls_freedb(&db);
+	sleep(15);
 	return (0);
 }

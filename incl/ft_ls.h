@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 14:49:47 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 11:52:44 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct		s_cduo
 typedef struct		s_rnode
 {
 	char			name[MXNAMLEN];
+	struct stat		stat;
 	struct s_rnode	*left;
 	struct s_rnode	*right;
 }					t_rnode;
@@ -71,6 +72,15 @@ typedef struct		s_trinode
 	t_node			*ttmp;
 }					t_trinode;
 
+typedef struct		s_lsdir
+{
+	DIR				*p_dir;
+	struct dirent	*sd;
+	struct stat		st;
+	t_rnode			*r_tree;
+	char			*name;
+}					t_lsdir;
+
 typedef struct		s_lsnfo
 {
 	char			**args;
@@ -78,6 +88,7 @@ typedef struct		s_lsnfo
 	size_t			dirc;
 	char			type[MXTYPLEN];
 	char			cdir[MXNAMLEN];
+	size_t			nl;
 	t_blean			l_flg;
 	t_blean			A_flg;
 	t_blean			a_flg;
@@ -92,6 +103,7 @@ int					ls_start(t_lsnfo *db);
 void				ls_addtnoden(t_node **tree, char *name);
 void				ls_addtnodet(t_node **tree, char *name);
 void				ls_addrnoden(t_rnode **tree, char *name);
+void				ls_addrnodet(t_rnode **tree, char *name);
 void				ls_clrtree(t_node **tree);
 void				ls_clrrtree(t_rnode **tree);
 char				*ls_dirjoin(const char *s1, const  char *s2);
@@ -107,7 +119,11 @@ int					ls_recurse(t_lsnfo *db, t_rnode *dirs);
 int					ls_preprecurs(t_lsnfo *db);
 int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
+unsigned int		ls_getmbramt(t_rnode *tree);
 void				ls_dirtree(t_node *tree, t_lsnfo *db, char **av, size_t inx);
+int					ls_cmptime(struct stat *elem, struct stat *tmp);
+t_node				*prep_addnode(char *name);
+t_rnode				*prep_addrnode(char *name);
 int					ls_chkdirnam(t_lsnfo *db, char *dirnam);
 int					ls_anaargs(t_lsnfo *db);
 # endif
