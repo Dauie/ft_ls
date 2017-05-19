@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:08:52 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 11:40:54 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 18:00:22 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void	ls_initdb(t_lsnfo *db)
 	db->args = NULL;
 	db->dirs = NULL;
 	db->dirc = 0;
-	db->nl = 0;
 	ft_bzero(db->type, MXTYPLEN);
 	ft_bzero(db->cdir, MXNAMLEN);
+	db->fu_flg = FALSE;
 	db->l_flg = FALSE;
 	db->A_flg = FALSE;
 	db->a_flg = FALSE;

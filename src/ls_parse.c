@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:54:12 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 14:32:39 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 18:00:51 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ int					ls_anaargs(t_lsnfo *db)
 		else
 		{
 			if (!(ls_vrfydir(db, db->args[i])))
-				continue ;
+			{
+				db->fu_flg = TRUE;
+					continue ;
+			}
 		}
 	}
 	return (1);

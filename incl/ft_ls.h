@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 11:52:44 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 17:59:58 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ typedef struct		s_lsnfo
 	char			type[MXTYPLEN];
 	char			cdir[MXNAMLEN];
 	size_t			nl;
+	t_blean			fu_flg;
 	t_blean			l_flg;
 	t_blean			A_flg;
 	t_blean			a_flg;

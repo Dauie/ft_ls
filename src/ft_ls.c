@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 15:32:57 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/18 18:03:19 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,13 @@ int					ls_start(t_lsnfo *db)
 {
 	if (db->a_flg == TRUE && db->A_flg == TRUE)
 		db->A_flg = FALSE;
-	if (db->dirc == 0)
+	if (db->dirc == 0 && db->fu_flg == FALSE)
 	{
 		ft_strcpy(db->cdir, ".");
 		list_dir(db, ".");
 	}
+	else if (db->fu_flg == TRUE && db->dirc == 0)
+		return (0);
 	else
 		ls_traverse(db->dirs, db);
 	return (1);
@@ -80,6 +82,5 @@ int					main(int ac, char **av)
 	}
 	ls_start(&db);
 	ls_freedb(&db);
-	sleep(15);
 	return (0);
 }
