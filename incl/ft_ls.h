@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 17:59:58 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/22 20:29:37 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
 unsigned int		ls_getmbramt(t_rnode *tree);
 void				ls_dirtree(t_node *tree, t_lsnfo *db, char **av, size_t inx);
-int					ls_cmptime(struct stat *elem, struct stat *tmp);
+int					ls_cmptime(struct stat *elem, struct stat *tmp, char *ename, char *tname);
 t_node				*prep_addnode(char *name);
 t_rnode				*prep_addrnode(char *name);
 int					ls_chkdirnam(t_lsnfo *db, char *dirnam);

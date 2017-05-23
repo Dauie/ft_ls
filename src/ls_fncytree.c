@@ -6,20 +6,27 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:18:06 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/16 17:48:27 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/22 20:27:56 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-int				ls_cmptime(struct stat *elem, struct stat *tmp)
+int				ls_cmptime(struct stat *elem, struct stat *tmp, char *ename, char *tname)
 {
 	int			val;
 
 	val = 0;
 	if (elem->st_mtimespec.tv_sec == tmp->st_mtimespec.tv_sec)
 	{
-		if (elem->st_mtimespec.tv_nsec > tmp->st_mtimespec.tv_nsec)
+		if (elem->st_mtimespec.tv_nsec == tmp->st_mtimespec.tv_nsec)
+		{
+			if (ft_strcmp(ename, tname) > 0)
+				val = 1;
+			else
+				val = -1;
+		}
+		else if (elem->st_mtimespec.tv_nsec > tmp->st_mtimespec.tv_nsec)
 			val = 1;
 		else
 			val = -1;

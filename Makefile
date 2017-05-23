@@ -11,10 +11,8 @@ OBJ = *.o
 
 RM = -rm -fr
 
-HEADER = ft_ls.h
-
 $(NAME):
-		$(MAKE) -C ~/code/libft/
+		$(MAKE) -C ./libft/ re
 		$(CC) $(CCFLAGS) $(SRC) -o $(NAME)
 
 clean:
