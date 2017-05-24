@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:54:12 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 18:00:51 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 17:24:46 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,8 @@ static int			ls_vrfydir(t_lsnfo *db, char *argstr)
 	return (1);
 }
 
-static int			ls_tickargs(t_lsnfo *db, char *argstr)
+static int			ls_tickargs(t_lsnfo *db, char *argstr, int i)
 {
-	int				i;
-
-	i = -1;
 	while (argstr[++i])
 	{
 		if (argstr[i] == 'a')
@@ -52,6 +49,7 @@ static int			ls_tickargs(t_lsnfo *db, char *argstr)
 			ft_printf("usage: ft_ls [-lAaRr] [file ...]\n");
 			return (0);
 		}
+
 	}
 	return (1);
 }
@@ -59,23 +57,21 @@ static int			ls_tickargs(t_lsnfo *db, char *argstr)
 int					ls_anaargs(t_lsnfo *db)
 {
 	int				i;
-
+	
 	i = -1;
+	if (db->args[0][0] == '-')
+	{
+		i++;
+		if (!(ls_tickargs(db, &db->args[0][1], -1)))
+			return (0);
+		ft_strcpy(db->type, db->args[0]);
+	}
 	while (db->args[++i])
 	{
-		if (*db->args[i] == '-')
+		if (!(ls_vrfydir(db, db->args[i])))
 		{
-			ft_strcpy(db->type, db->args[i]);
-			if (!(ls_tickargs(db, &db->args[i][1])))
-				return (0);
-		}
-		else
-		{
-			if (!(ls_vrfydir(db, db->args[i])))
-			{
-				db->fu_flg = TRUE;
-					continue ;
-			}
+			db->fu_flg = TRUE;
+				continue ;
 		}
 	}
 	return (1);
