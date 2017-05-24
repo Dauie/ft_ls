@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:08:20 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 14:14:32 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 18:54:39 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ void			ls_manageput(t_node *tree, t_lsnfo *db)
 		else
 			ls_printtree(tree, db);
 	}
-	if ((db->R_flg && !db->l_flg) || db->dirc > 1)
+	if ((db->rr_flg && !db->l_flg) || db->dirc > 1)
 		ft_putchar('\n');
 	db->dirc--;
 }

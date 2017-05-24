@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:54:12 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 17:24:46 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 18:55:04 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,11 @@ static int			ls_tickargs(t_lsnfo *db, char *argstr, int i)
 		if (argstr[i] == 'a')
 			db->a_flg = TRUE;
 		else if (argstr[i] == 'A')
-			db->A_flg = TRUE;
+			db->aa_flg = TRUE;
 		else if (argstr[i] == 'r')
 			db->r_flg = TRUE;
 		else if (argstr[i] == 'R')
-			db->R_flg = TRUE;
+			db->rr_flg = TRUE;
 		else if (argstr[i] == 'l')
 			db->l_flg = TRUE;
 		else if (argstr[i] == 't')
@@ -49,7 +49,6 @@ static int			ls_tickargs(t_lsnfo *db, char *argstr, int i)
 			ft_printf("usage: ft_ls [-lAaRr] [file ...]\n");
 			return (0);
 		}
-
 	}
 	return (1);
 }
@@ -57,7 +56,7 @@ static int			ls_tickargs(t_lsnfo *db, char *argstr, int i)
 int					ls_anaargs(t_lsnfo *db)
 {
 	int				i;
-	
+
 	i = -1;
 	if (db->args[0][0] == '-')
 	{
@@ -71,7 +70,7 @@ int					ls_anaargs(t_lsnfo *db)
 		if (!(ls_vrfydir(db, db->args[i])))
 		{
 			db->fu_flg = TRUE;
-				continue ;
+			continue ;
 		}
 	}
 	return (1);
@@ -81,11 +80,11 @@ int					ls_chkdirnam(t_lsnfo *db, char *dirnam)
 {
 	if (db->a_flg == TRUE)
 		return (0);
-	if (db->a_flg == FALSE && db->A_flg == FALSE && dirnam[0] == '.')
+	if (db->a_flg == FALSE && db->aa_flg == FALSE && dirnam[0] == '.')
 		return (1);
-	if (db->A_flg == TRUE && (ft_strcmp(".", dirnam) == 0))
+	if (db->aa_flg == TRUE && (ft_strcmp(".", dirnam) == 0))
 		return (1);
-	if (db->A_flg == TRUE && (ft_strcmp("..", dirnam) == 0))
+	if (db->aa_flg == TRUE && (ft_strcmp("..", dirnam) == 0))
 		return (1);
 	return (0);
 }

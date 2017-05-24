@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:29:07 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 15:36:28 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 17:39:07 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void				ls_getblksz(size_t *sz, t_node *tree, t_lsnfo *info)
 	ft_strdel(&name);
 }
 
-static void				ls_putpermtype(struct stat *st)
+static void			ls_putpermtype(struct stat *st)
 {
 	if (S_ISREG(st->st_mode))
 		ft_putchar('-');
@@ -50,7 +50,7 @@ static void				ls_putpermtype(struct stat *st)
 		ft_putchar('-');
 }
 
-static void				ls_putperm(struct stat *st)
+static void			ls_putperm(struct stat *st)
 {
 	ls_putpermtype(st);
 	ft_putchar((st->st_mode & S_IRUSR) ? 'r' : '-');
@@ -65,7 +65,7 @@ static void				ls_putperm(struct stat *st)
 	ft_putchar(' ');
 }
 
-static void				ls_putlink(char *path)
+static void			ls_putlink(char *path)
 {
 	char			buf[MXNAMLEN];
 

@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:08:52 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 18:00:22 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 18:54:26 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ls_initdb(t_lsnfo *db)
 	ft_bzero(db->cdir, MXNAMLEN);
 	db->fu_flg = FALSE;
 	db->l_flg = FALSE;
-	db->A_flg = FALSE;
+	db->aa_flg = FALSE;
 	db->a_flg = FALSE;
-	db->R_flg = FALSE;
+	db->rr_flg = FALSE;
 	db->r_flg = FALSE;
 	db->t_flg = FALSE;
 }
@@ -46,7 +46,7 @@ void	ls_initnode(t_node *node)
 
 void	ls_initrnode(t_rnode *node)
 {
-	ft_bzero(node->name, MXNAMLEN);
+	ft_bzero(node->nm, MXNAMLEN);
 	node->left = NULL;
 	node->right = NULL;
 }

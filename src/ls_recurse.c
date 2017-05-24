@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:33:41 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 15:35:34 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 17:57:15 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int					ls_recurse(t_lsnfo *db, t_rnode *dirs)
 		return (-1);
 	args[0] = ft_strdup("ft_ls");
 	args[1] = ft_strdup(db->type);
-	args[2] = ft_strdup(dirs->name);
+	args[2] = ft_strdup(dirs->nm);
 	main(3, args);
 	if (args)
 		ft_tbldel(args);

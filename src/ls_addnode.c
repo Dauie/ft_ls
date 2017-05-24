@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 16:39:39 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 18:03:34 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,117 +16,114 @@ void			ls_addtnoden(t_node **tree, char *name)
 {
 	t_trinode	tri;
 
-	tri.ttmp = *tree;
-	tri.elem = prep_addnode(name);
-	if (tri.ttmp)
+	tri.tt = *tree;
+	tri.el = prep_addnode(name);
+	if (tri.tt)
 	{
-		while (tri.ttmp)
+		while (tri.tt)
 		{
-			tri.ntmp = tri.ttmp;
-			if (ft_strcmp(tri.elem->name, tri.ttmp->name) < 0)
+			tri.nt = tri.tt;
+			if (ft_strcmp(tri.el->name, tri.tt->name) < 0)
 			{
-				tri.ttmp = tri.ttmp->left;
-				if (!tri.ttmp)
-					tri.ntmp->left = tri.elem;
+				tri.tt = tri.tt->left;
+				if (!tri.tt)
+					tri.nt->left = tri.el;
 			}
 			else
 			{
-				tri.ttmp = tri.ttmp->right;
-				if (!tri.ttmp)
-					tri.ntmp->right = tri.elem;
+				tri.tt = tri.tt->right;
+				if (!tri.tt)
+					tri.nt->right = tri.el;
 			}
 		}
 	}
 	else
-		*tree = tri.elem;
+		*tree = tri.el;
 }
-// STILL FIXKING TIME. FIGURE IT OUT!
 
 void			ls_addtnodet(t_node **tree, char *name)
 {
 	t_trinode	tri;
 
-	tri.ttmp = *tree;
-	tri.elem = prep_addnode(name);
-	if (tri.ttmp)
+	tri.tt = *tree;
+	tri.el = prep_addnode(name);
+	if (tri.tt)
 	{
-		while (tri.ttmp)
+		while (tri.tt)
 		{
-			tri.ntmp = tri.ttmp;
-			if (ls_cmptime(&tri.elem->stat, &tri.ttmp->stat,
-						tri.elem->name, tri.ttmp->name) < 0)
+			tri.nt = tri.tt;
+			if (ls_ct(&tri.el->st, &tri.tt->st, tri.el->name, tri.tt->name) < 0)
 			{
-				tri.ttmp = tri.ttmp->left;
-				if (!tri.ttmp)
-					tri.ntmp->left = tri.elem;
+				tri.tt = tri.tt->left;
+				if (!tri.tt)
+					tri.nt->left = tri.el;
 			}
 			else
 			{
-				tri.ttmp = tri.ttmp->right;
-				if (!tri.ttmp)
-					tri.ntmp->right = tri.elem;
+				tri.tt = tri.tt->right;
+				if (!tri.tt)
+					tri.nt->right = tri.el;
 			}
 		}
 	}
 	else
-		*tree = tri.elem;
+		*tree = tri.el;
 }
 
 void			ls_addrnoden(t_rnode **tree, char *name)
 {
 	t_trirnode	tri;
 
-	tri.ttmp = *tree;
-	tri.elem = prep_addrnode(name);
-	if (tri.ttmp)
+	tri.tt = *tree;
+	tri.el = prep_addrnode(name);
+	if (tri.tt)
 	{
-		tri.ntmp = tri.ttmp;
-		while (tri.ttmp)
+		tri.nt = tri.tt;
+		while (tri.tt)
 		{
-			if (tri.ttmp && ft_strcmp(name, tri.ttmp->name) < 0)
+			if (tri.tt && ft_strcmp(name, tri.tt->nm) < 0)
 			{
-				tri.ttmp = tri.ttmp->left;
-				if (!tri.ttmp)
-					tri.ntmp->left = tri.elem;
+				tri.tt = tri.tt->left;
+				if (!tri.tt)
+					tri.nt->left = tri.el;
 			}
 			else
 			{
-				tri.ttmp = tri.ttmp->right;
-				if (!tri.ttmp)
-					tri.ntmp->right = tri.elem;
+				tri.tt = tri.tt->right;
+				if (!tri.tt)
+					tri.nt->right = tri.el;
 			}
 		}
 	}
 	else
-		*tree = tri.elem;
+		*tree = tri.el;
 }
 
 void			ls_addrnodet(t_rnode **tree, char *name)
 {
 	t_trirnode	tri;
 
-	tri.ttmp = *tree;
-	tri.elem = prep_addrnode(name);
-	if (tri.ttmp)
+	tri.tt = *tree;
+	tri.el = prep_addrnode(name);
+	if (tri.tt)
 	{
-		while (tri.ttmp)
+		while (tri.tt)
 		{
-			tri.ntmp = tri.ttmp;
-			if (ls_cmptime(&tri.elem->stat, &tri.ntmp->stat,
-						tri.elem->name, tri.ntmp->name) < 0)
+			tri.nt = tri.tt;
+			if (ls_ct(&tri.el->st, &tri.nt->st, tri.el->nm, tri.nt->nm) < 0)
 			{
-				tri.ttmp = tri.ttmp->left;
-				if (!tri.ttmp)
-					tri.ntmp->left = tri.elem;
+				tri.tt = tri.tt->left;
+				if (!tri.tt)
+					tri.nt->left = tri.el;
 			}
 			else
 			{
-				tri.ttmp = tri.ttmp->right;
-				if (!tri.ttmp)
-					tri.ntmp->right = tri.elem;
+				tri.tt = tri.tt->right;
+				if (!tri.tt)
+					tri.nt->right = tri.el;
 			}
 		}
 	}
 	else
-		*tree = tri.elem;
+		*tree = tri.el;
 }

@@ -6,13 +6,14 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/16 17:18:06 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 16:33:12 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 20:11:12 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
-int				ls_cmptime(struct stat *elem, struct stat *tmp, char *ename, char *tname)
+int				ls_ct(struct stat *elem, struct stat *tmp,
+		char *ename, char *tname)
 {
 	int			val;
 
@@ -46,7 +47,7 @@ t_node			*prep_addnode(char *name)
 		return (NULL);
 	ls_initnode(elem);
 	ft_strcpy(elem->name, name);
-	lstat(name, &elem->stat);
+	lstat(name, &elem->st);
 	return (elem);
 }
 
@@ -57,7 +58,7 @@ t_rnode			*prep_addrnode(char *name)
 	if (!(elem = (t_rnode *)ft_memalloc(sizeof(t_rnode))))
 		return (NULL);
 	ls_initrnode(elem);
-	ft_strcpy(elem->name, name);
-	lstat(name, &elem->stat);
+	ft_strcpy(elem->nm, name);
+	lstat(name, &elem->st);
 	return (elem);
 }

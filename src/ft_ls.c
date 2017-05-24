@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/18 18:03:19 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 20:02:24 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,12 @@ int					list_dir(t_lsnfo *db, char *dir)
 	}
 	ls_manageput(tree, db);
 	db->dirc--;
-	ft_putstr("\n");
-	if (db->R_flg == TRUE)
+	if ((db->rr_flg && !db->l_flg) || db->dirc > 1)
+		ft_putchar('\n');
+	if (db->rr_flg == TRUE)
 		ls_preprecurs(db);
 	closedir(ddir);
-	if (tree)
-		ls_clrtree(&tree);
+	ls_clrtree(&tree);
 	return (0);
 }
 
@@ -45,17 +45,17 @@ void				ls_traverse(t_rnode *dirs, t_lsnfo *db)
 {
 	if (dirs->left)
 		ls_traverse(dirs->left, db);
-	ft_strcpy(db->cdir, dirs->name);
-	ft_printf("%s:\n", dirs->name);
-	list_dir(db, dirs->name);
+	ft_strcpy(db->cdir, dirs->nm);
+	ft_printf("%s:\n", dirs->nm);
+	list_dir(db, dirs->nm);
 	if (dirs->right)
 		ls_traverse(dirs->right, db);
 }
 
 int					ls_start(t_lsnfo *db)
 {
-	if (db->a_flg == TRUE && db->A_flg == TRUE)
-		db->A_flg = FALSE;
+	if (db->a_flg == TRUE && db->aa_flg == TRUE)
+		db->aa_flg = FALSE;
 	if (db->dirc == 0 && db->fu_flg == FALSE)
 	{
 		ft_strcpy(db->cdir, ".");

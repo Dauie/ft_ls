@@ -6,30 +6,30 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/22 20:29:37 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/23 18:52:47 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ft_ls_H
-# define ft_ls_H
+#ifndef FT_LS_H
+# define FT_LS_H
 
-#include "../libft/incl/bool.h"
-#include "../libft/incl/char.h"
-#include "../libft/incl/cnvrsn.h"
-#include "../libft/incl/gnl.h"
-#include "../libft/incl/lst.h"
-#include "../libft/incl/mem.h"
-#include "../libft/incl/num.h"
-#include "../libft/incl/put.h"
-#include "../libft/incl/printf.h"
-#include <dirent.h>
-#include <time.h>
-#include <uuid/uuid.h>
-#include <grp.h>
-#include <pwd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
+# include "../libft/incl/bool.h"
+# include "../libft/incl/char.h"
+# include "../libft/incl/cnvrsn.h"
+# include "../libft/incl/gnl.h"
+# include "../libft/incl/lst.h"
+# include "../libft/incl/mem.h"
+# include "../libft/incl/num.h"
+# include "../libft/incl/put.h"
+# include "../libft/incl/printf.h"
+# include <dirent.h>
+# include <time.h>
+# include <uuid/uuid.h>
+# include <grp.h>
+# include <pwd.h>
+# include <sys/types.h>
+# include <sys/stat.h>
+# include <unistd.h>
 
 # define MXDIRLEN 1024
 # define MXNAMLEN 256
@@ -43,33 +43,33 @@ typedef struct		s_cduo
 
 typedef struct		s_rnode
 {
-	char			name[MXNAMLEN];
-	struct stat		stat;
+	char			nm[MXNAMLEN];
+	struct stat		st;
 	struct s_rnode	*left;
 	struct s_rnode	*right;
 }					t_rnode;
 
 typedef struct		s_trirnode
 {
-	t_rnode			*elem;
-	t_rnode			*ntmp;
-	t_rnode			*ttmp;
+	t_rnode			*el;
+	t_rnode			*nt;
+	t_rnode			*tt;
 }					t_trirnode;
 
 typedef struct		s_node
 {
 	char			cdir[MXNAMLEN];
-	char 			name[MXNAMLEN];
-	struct stat		stat;
+	char			name[MXNAMLEN];
+	struct stat		st;
 	struct s_node	*left;
 	struct s_node	*right;
 }					t_node;
 
 typedef struct		s_trinode
 {
-	t_node			*elem;
-	t_node			*ntmp;
-	t_node			*ttmp;
+	t_node			*el;
+	t_node			*nt;
+	t_node			*tt;
 }					t_trinode;
 
 typedef struct		s_lsdir
@@ -91,9 +91,9 @@ typedef struct		s_lsnfo
 	size_t			nl;
 	t_blean			fu_flg;
 	t_blean			l_flg;
-	t_blean			A_flg;
+	t_blean			aa_flg;
 	t_blean			a_flg;
-	t_blean			R_flg;
+	t_blean			rr_flg;
 	t_blean			r_flg;
 	t_blean			t_flg;
 }					t_lsnfo;
@@ -107,7 +107,7 @@ void				ls_addrnoden(t_rnode **tree, char *name);
 void				ls_addrnodet(t_rnode **tree, char *name);
 void				ls_clrtree(t_node **tree);
 void				ls_clrrtree(t_rnode **tree);
-char				*ls_dirjoin(const char *s1, const  char *s2);
+char				*ls_dirjoin(const char *s1, const char *s2);
 void				ls_initdb(t_lsnfo *db);
 void				ls_freedb(t_lsnfo *db);
 void				ls_initnode(t_node *node);
@@ -121,10 +121,10 @@ int					ls_preprecurs(t_lsnfo *db);
 int					ls_treesearch(t_node *tree, char *name);
 unsigned int		ls_diramnt(t_node *tree);
 unsigned int		ls_getmbramt(t_rnode *tree);
-void				ls_dirtree(t_node *tree, t_lsnfo *db, char **av, size_t inx);
-int					ls_cmptime(struct stat *elem, struct stat *tmp, char *ename, char *tname);
+void				ls_dirtree(t_node *tree, t_lsnfo *db, char **av, size_t i);
+int					ls_ct(struct stat *e, struct stat *t, char *el, char *tm);
 t_node				*prep_addnode(char *name);
 t_rnode				*prep_addrnode(char *name);
 int					ls_chkdirnam(t_lsnfo *db, char *dirnam);
 int					ls_anaargs(t_lsnfo *db);
-# endif
+#endif
