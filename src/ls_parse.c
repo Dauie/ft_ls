@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:54:12 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 18:55:04 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/24 15:51:18 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ static int			ls_vrfydir(t_lsnfo *db, char *argstr)
 		return (0);
 	}
 	closedir(chkdir);
-	ls_addrnoden(&db->dirs, argstr);
+	if (db->t_flg)
+		ls_addrnodet(&db->dirs, argstr);
+	else
+		ls_addrnoden(&db->dirs, argstr);
 	db->dirc++;
 	return (1);
 }
@@ -56,14 +59,14 @@ static int			ls_tickargs(t_lsnfo *db, char *argstr, int i)
 int					ls_anaargs(t_lsnfo *db)
 {
 	int				i;
-
+	
 	i = -1;
 	if (db->args[0][0] == '-')
 	{
-		i++;
 		if (!(ls_tickargs(db, &db->args[0][1], -1)))
 			return (0);
 		ft_strcpy(db->type, db->args[0]);
+		i = 0;
 	}
 	while (db->args[++i])
 	{

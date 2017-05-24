@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 18:03:34 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/24 15:56:20 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,9 +78,9 @@ void			ls_addrnoden(t_rnode **tree, char *name)
 	tri.el = prep_addrnode(name);
 	if (tri.tt)
 	{
-		tri.nt = tri.tt;
 		while (tri.tt)
 		{
+			tri.nt = tri.tt;
 			if (tri.tt && ft_strcmp(name, tri.tt->nm) < 0)
 			{
 				tri.tt = tri.tt->left;
