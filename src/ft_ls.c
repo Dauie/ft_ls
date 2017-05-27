@@ -6,11 +6,52 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/13 09:46:56 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 20:02:24 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/26 20:13:00 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
+
+int					ls_lfile(struct dirent *sd, t_lsnfo *db)
+{
+	if (db->l_flg == TRUE)
+	{
+		ls_putmetaf(sd->d_name);
+	}
+	else
+	{
+		ft_putendl(sd->d_name);
+	}
+	return (0);
+}
+
+int					list_file(char *dir, t_lsnfo *db)
+{
+	DIR				*dot;
+	struct dirent	*sd;
+
+	if (!(dot = opendir(".")))
+		return (-1);
+	while ((sd = readdir(dot)))
+	{
+		if (ft_strcmp(dir, sd->d_name) == 0)
+		{
+			ls_lfile(sd, db);
+			return (1);
+		}
+	}
+	ft_printf("could not find %s\n", sd->d_name);
+	return (0);
+}
+
+int					list_cleanup(t_node *tree, DIR *ddir)
+{
+	closedir(ddir);
+	ls_clrtree(&tree);
+	return (0);
+}
+
+/*files and folders are now in the tree. If the opendir fails then it sees if it iis a file then print its information accordingly. You will need to put the "file :\n" portion inside of the printtree functions.*/
 
 int					list_dir(t_lsnfo *db, char *dir)
 {
@@ -19,7 +60,10 @@ int					list_dir(t_lsnfo *db, char *dir)
 	DIR				*ddir;
 
 	if (!(ddir = opendir(dir)))
-		return (ft_puterror(-4));
+	{
+		list_file(dir, db);
+		return (0);
+	}
 	tree = NULL;
 	while ((sd = readdir(ddir)) != NULL)
 	{
@@ -36,31 +80,30 @@ int					list_dir(t_lsnfo *db, char *dir)
 		ft_putchar('\n');
 	if (db->rr_flg == TRUE)
 		ls_preprecurs(db);
-	closedir(ddir);
-	ls_clrtree(&tree);
+	list_cleanup(tree, ddir);
 	return (0);
 }
 
 void				ls_traverse(t_rnode *dirs, t_lsnfo *db)
 {
-	if (dirs->left)
-		ls_traverse(dirs->left, db);
-	ft_strcpy(db->cdir, dirs->nm);
-	ft_printf("%s:\n", dirs->nm);
-	list_dir(db, dirs->nm);
-	if (dirs->right)
-		ls_traverse(dirs->right, db);
+	if (dirs)
+	{
+		if (dirs->left)
+			ls_traverse(dirs->left, db);
+		ft_strcpy(db->cdir, dirs->nm);
+		list_dir(db, dirs->nm);
+		if (dirs->right)
+			ls_traverse(dirs->right, db);
+	}
 }
 
 int					ls_start(t_lsnfo *db)
 {
 	if (db->a_flg == TRUE && db->aa_flg == TRUE)
 		db->aa_flg = FALSE;
+	ft_strcpy(db->cdir, "./");
 	if (db->dirc == 0 && db->fu_flg == FALSE)
-	{
-		ft_strcpy(db->cdir, ".");
-		list_dir(db, ".");
-	}
+		list_dir(db, db->cdir);
 	else if (db->fu_flg == TRUE && db->dirc == 0)
 		return (0);
 	else

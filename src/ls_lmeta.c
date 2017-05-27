@@ -6,7 +6,7 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/10 17:29:07 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 17:39:07 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/26 20:14:26 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static void			ls_putpermtype(struct stat *st)
 		ft_putchar('-');
 }
 
-static void			ls_putperm(struct stat *st)
+void			ls_putperm(struct stat *st)
 {
 	ls_putpermtype(st);
 	ft_putchar((st->st_mode & S_IRUSR) ? 'r' : '-');
@@ -61,7 +61,7 @@ static void			ls_putperm(struct stat *st)
 	ft_putchar((st->st_mode & S_IXGRP) ? 'x' : '-');
 	ft_putchar((st->st_mode & S_IROTH) ? 'r' : '-');
 	ft_putchar((st->st_mode & S_IWOTH) ? 'w' : '-');
-	ft_putchar((st->st_mode & S_IXOTH) ? 'r' : '-');
+	ft_putchar((st->st_mode & S_IXOTH) ? 'x' : '-');
 	ft_putchar(' ');
 }
 
@@ -75,7 +75,7 @@ static void			ls_putlink(char *path)
 	ft_putstr(buf);
 }
 
-void				ls_putmeta(t_node *node, t_lsnfo *info)
+void				ls_putmeta(char *name, t_lsnfo *info)
 {
 	struct stat		st;
 	struct passwd	*pw;
@@ -83,7 +83,7 @@ void				ls_putmeta(t_node *node, t_lsnfo *info)
 	t_cduo			strs;
 	char			time[MXNAMLEN];
 
-	if (!(strs.uno = ls_dirjoin(info->cdir, node->name)))
+	if (!(strs.uno = ls_dirjoin(info->cdir, name)))
 		return ;
 	lstat(strs.uno, &st);
 	strs.dos = ctime(&st.st_mtime);
@@ -92,7 +92,31 @@ void				ls_putmeta(t_node *node, t_lsnfo *info)
 	pw = getpwuid(st.st_uid);
 	gp = getgrgid(st.st_gid);
 	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", st.st_nlink, pw->pw_name,
-			gp->gr_name, st.st_size, time, node->name);
+			gp->gr_name, st.st_size, time, name);
+	if (S_ISLNK(st.st_mode))
+		ls_putlink(strs.uno);
+	ft_putchar('\n');
+	ft_strdel(&strs.uno);
+}
+
+void				ls_putmetaf(char *name)
+{
+	struct stat		st;
+	struct passwd	*pw;
+	struct group	*gp;
+	t_cduo			strs;
+	char			time[MXNAMLEN];
+
+	if (!(strs.uno = ls_dirjoin(".", name)))
+		return ;
+	lstat(strs.uno, &st);
+	strs.dos = ctime(&st.st_mtime);
+	ft_strcpy(time, &strs.dos[4]);
+	ls_putperm(&st);
+	pw = getpwuid(st.st_uid);
+	gp = getgrgid(st.st_gid);
+	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", st.st_nlink, pw->pw_name,
+			gp->gr_name, st.st_size, time, name);
 	if (S_ISLNK(st.st_mode))
 		ls_putlink(strs.uno);
 	ft_putchar('\n');

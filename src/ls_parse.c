@@ -6,19 +6,44 @@
 /*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/05/12 21:54:12 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/24 15:51:18 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/26 16:45:30 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
 
+static int			ls_checkcdir(t_lsnfo *db, char *argstr)
+{
+	DIR				*dot;
+	struct dirent	*sd;
+
+	if (!(dot = opendir(".")))
+		return (-1);
+	while ((sd = readdir(dot)) != NULL)
+	{
+		if (ft_strcmp(sd->d_name, argstr) == 0)
+		{
+			if (db->t_flg)
+				ls_addrnodet(&db->dirs, argstr);
+			else
+				ls_addrnoden(&db->dirs, argstr);
+			closedir(dot);
+			return (1);
+		}
+	}
+	closedir(dot);
+	return (0);
+}
+
 static int			ls_vrfydir(t_lsnfo *db, char *argstr)
 {
 	DIR				*chkdir;
+	
 
 	if (!(chkdir = opendir(argstr)))
 	{
-		ft_printf("ft_ls: %s: No such file or directory\n", argstr);
+		if (!(ls_checkcdir(db, argstr)))
+			ft_printf("ft_ls: %s no such file or directory\n", argstr);
 		return (0);
 	}
 	closedir(chkdir);
@@ -73,6 +98,7 @@ int					ls_anaargs(t_lsnfo *db)
 		if (!(ls_vrfydir(db, db->args[i])))
 		{
 			db->fu_flg = TRUE;
+			db->dirc++;
 			continue ;
 		}
 	}

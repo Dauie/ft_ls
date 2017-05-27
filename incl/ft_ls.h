@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/23 18:52:47 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/05/26 20:12:29 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,8 @@ void				ls_freedb(t_lsnfo *db);
 void				ls_initnode(t_node *node);
 void				ls_initrnode(t_rnode *node);
 void				ls_getblksz(size_t *sz, t_node *tree, t_lsnfo *info);
-void				ls_putmeta(t_node *node, t_lsnfo *info);
+void				ls_putmeta(char *name, t_lsnfo *info);
+void				ls_putmetaf(char *name);
 void				ls_manageput(t_node *tree, t_lsnfo *db);
 t_rnode				*ls_getdirlist(char *dir, t_lsnfo *db);
 int					ls_recurse(t_lsnfo *db, t_rnode *dirs);
