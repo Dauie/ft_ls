@@ -25,9 +25,9 @@ int					ls_lfile(struct dirent *sd, t_lsnfo *db)
 	return (0);
 }
 
-int					list_file(char *dir, t_lsnfo *db)
+int			list_file(char *dir, t_lsnfo *db)
 {
-	DIR				*dot;
+	DIR		*dot;
 	struct dirent	*sd;
 
 	if (!(dot = opendir(".")))
@@ -44,7 +44,7 @@ int					list_file(char *dir, t_lsnfo *db)
 	return (0);
 }
 
-int					list_cleanup(t_node *tree, DIR *ddir)
+int			list_cleanup(t_node *tree, DIR *ddir)
 {
 	closedir(ddir);
 	ls_clrtree(&tree);
@@ -53,18 +53,19 @@ int					list_cleanup(t_node *tree, DIR *ddir)
 
 /*files and folders are now in the tree. If the opendir fails then it sees if it iis a file then print its information accordingly. You will need to put the "file :\n" portion inside of the printtree functions.*/
 
-int					list_dir(t_lsnfo *db, char *dir)
+int			list_dir(t_lsnfo *db, char *dir)
 {
-	t_node			*tree;
-	struct dirent	*sd;
-	DIR				*ddir;
-
+	t_node		*tree;
+	struct dirent 	*sd;
+	DIR		*ddir;
+	
+	tree = NULL;
+	ddir = NULL;
 	if (!(ddir = opendir(dir)))
 	{
 		list_file(dir, db);
 		return (0);
 	}
-	tree = NULL;
 	while ((sd = readdir(ddir)) != NULL)
 	{
 		if (ls_chkdirnam(db, sd->d_name))
@@ -75,16 +76,13 @@ int					list_dir(t_lsnfo *db, char *dir)
 			ls_addtnoden(&tree, sd->d_name);
 	}
 	ls_manageput(tree, db);
-	db->dirc--;
-	if ((db->rr_flg && !db->l_flg) || db->dirc > 1)
-		ft_putchar('\n');
 	if (db->rr_flg == TRUE)
 		ls_preprecurs(db);
 	list_cleanup(tree, ddir);
 	return (0);
 }
 
-void				ls_traverse(t_rnode *dirs, t_lsnfo *db)
+void			ls_traverse(t_rnode *dirs, t_lsnfo *db)
 {
 	if (dirs)
 	{
@@ -97,11 +95,11 @@ void				ls_traverse(t_rnode *dirs, t_lsnfo *db)
 	}
 }
 
-int					ls_start(t_lsnfo *db)
+int			ls_start(t_lsnfo *db)
 {
 	if (db->a_flg == TRUE && db->aa_flg == TRUE)
 		db->aa_flg = FALSE;
-	ft_strcpy(db->cdir, "./");
+	ft_strcpy(db->cdir, ".");
 	if (db->dirc == 0 && db->fu_flg == FALSE)
 		list_dir(db, db->cdir);
 	else if (db->fu_flg == TRUE && db->dirc == 0)
@@ -111,9 +109,9 @@ int					ls_start(t_lsnfo *db)
 	return (1);
 }
 
-int					main(int ac, char **av)
+int			main(int ac, char **av)
 {
-	t_lsnfo			db;
+	t_lsnfo		db;
 
 	ls_initdb(&db);
 	if (ac > 1)

@@ -61,6 +61,8 @@ void			ls_manageput(t_node *tree, t_lsnfo *db)
 	size_t	sz;
 
 	sz = 0;
+	if ((db->rr_flg == TRUE || db->dirc > 1) && ft_strcmp(db->cdir, ".") != 0)
+		ft_printf("\n%s:\n", db->cdir);
 	if (db->l_flg == TRUE)
 	{
 		ls_getblksz(&sz, tree, db);
@@ -80,7 +82,5 @@ void			ls_manageput(t_node *tree, t_lsnfo *db)
 		else
 			ls_printtree(tree, db);
 	}
-	if ((db->rr_flg && !db->l_flg) || db->dirc > 1)
-		ft_putchar('\n');
-	db->dirc--;
+	ft_putchar('\n');
 }

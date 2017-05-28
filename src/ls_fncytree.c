@@ -12,10 +12,10 @@
 
 #include "../incl/ft_ls.h"
 
-int				ls_ct(struct stat *elem, struct stat *tmp,
-		char *ename, char *tname)
+int			ls_ct(struct stat *elem, struct stat *tmp,
+			char *ename, char *tname)
 {
-	int			val;
+	int		val;
 
 	val = 0;
 	if (elem->st_mtimespec.tv_sec == tmp->st_mtimespec.tv_sec)

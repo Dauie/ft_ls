@@ -17,8 +17,6 @@ void	ls_initdb(t_lsnfo *db)
 	db->args = NULL;
 	db->dirs = NULL;
 	db->dirc = 0;
-	ft_bzero(db->type, MXTYPLEN);
-	ft_bzero(db->cdir, MXNAMLEN);
 	db->fu_flg = FALSE;
 	db->l_flg = FALSE;
 	db->aa_flg = FALSE;
@@ -38,8 +36,6 @@ void	ls_freedb(t_lsnfo *db)
 
 void	ls_initnode(t_node *node)
 {
-	ft_bzero(node->name, MXNAMLEN);
-	ft_bzero(node->cdir, MXNAMLEN);
 	node->left = NULL;
 	node->right = NULL;
 }
@@ -47,6 +43,5 @@ void	ls_initnode(t_node *node)
 void	ls_initrnode(t_rnode *node)
 {
 	ft_bzero(node->nm, MXNAMLEN);
-	node->left = NULL;
 	node->right = NULL;
 }
