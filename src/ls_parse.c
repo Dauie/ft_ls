@@ -1,119 +1,53 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ls_parse.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/12 21:54:12 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/26 16:45:30 by rlutt            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../incl/ft_ls.h"
 
-static int			ls_checkcdir(t_lsnfo *db, char *argstr)
+int			ls_sort(char *argstr, t_lsnfo *info)
 {
-	DIR				*dot;
-	struct dirent	*sd;
-
-	if (!(dot = opendir(".")))
-		return (-1);
-	while ((sd = readdir(dot)) != NULL)
-	{
-		if (ft_strcmp(sd->d_name, argstr) == 0)
-		{
-			if (db->t_flg)
-				ls_addrnodet(&db->dirs, argstr);
-			else
-				ls_addrnoden(&db->dirs, argstr);
-			closedir(dot);
-			return (1);
-		}
-	}
-	closedir(dot);
-	return (0);
-}
-
-static int			ls_vrfydir(t_lsnfo *db, char *argstr)
-{
-	DIR				*chkdir;
-	
-
-	if (!(chkdir = opendir(argstr)))
-	{
-		if (!(ls_checkcdir(db, argstr)))
-			ft_printf("ft_ls: %s no such file or directory\n", argstr);
-		return (0);
-	}
-	closedir(chkdir);
-	if (db->t_flg)
-		ls_addrnodet(&db->dirs, argstr);
+	DIR		*chkdir;
+	if ((chkdir = opendir(argstr)))
+		ls_adddir(argstr);
 	else
-		ls_addrnoden(&db->dirs, argstr);
-	db->dirc++;
+	{
+		if (!(ls_checkfile(info, argstr)))
+			ls_error(-1, argstr);
+	}
 	return (1);
 }
 
-static int			ls_tickargs(t_lsnfo *db, char *argstr, int i)
+static int ls_getflags(t_lsnfo *info, char *argstr)
 {
+	int i;
+
+	i = -1;
 	while (argstr[++i])
 	{
 		if (argstr[i] == 'a')
-			db->a_flg = TRUE;
+			info->f_all = TRUE;
 		else if (argstr[i] == 'A')
-			db->aa_flg = TRUE;
+			info->f_jhidden = TRUE;
 		else if (argstr[i] == 'r')
-			db->r_flg = TRUE;
+			info->f_rev = TRUE;
 		else if (argstr[i] == 'R')
-			db->rr_flg = TRUE;
+			info->f_recur = TRUE;
 		else if (argstr[i] == 'l')
-			db->l_flg = TRUE;
+			info->f_long = TRUE;
 		else if (argstr[i] == 't')
-			db->t_flg = TRUE;
+			info->f_time = TRUE;
 		else
-		{
-			ft_printf("ft_ls: illegal option -- %c\n", argstr[i]);
-			ft_printf("usage: ft_ls [-lAaRr] [file ...]\n");
-			return (0);
-		}
+			return (ls_error(-3, argstr));
 	}
 	return (1);
 }
 
-int					ls_anaargs(t_lsnfo *db)
+int         ls_parse(t_lsnfo *info)
 {
-	int				i;
-	
+	int i;
+
 	i = -1;
-	if (db->args[0][0] == '-')
+	while (info->args[++i][0] == '-')
 	{
-		if (!(ls_tickargs(db, &db->args[0][1], -1)))
-			return (0);
-		ft_strcpy(db->type, db->args[0]);
-		i = 0;
+		if (!(ls_getflags(info, &info->args[i][1])))
+			return (-1);
 	}
-	while (db->args[++i])
-	{
-		if (!(ls_vrfydir(db, db->args[i])))
-		{
-			db->fu_flg = TRUE;
-			db->dirc++;
-			continue ;
-		}
-	}
-	return (1);
-}
-
-int					ls_chkdirnam(t_lsnfo *db, char *dirnam)
-{
-	if (db->a_flg == TRUE)
-		return (0);
-	if (db->a_flg == FALSE && db->aa_flg == FALSE && dirnam[0] == '.')
-		return (1);
-	if (db->aa_flg == TRUE && (ft_strcmp(".", dirnam) == 0))
-		return (1);
-	if (db->aa_flg == TRUE && (ft_strcmp("..", dirnam) == 0))
-		return (1);
-	return (0);
+	while (info->args[i])
+		ls_sort(info->args[i++], info);
 }

@@ -1,27 +1,15 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ls_dirjoin.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rlutt <marvin@42.fr>                       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/05/09 19:09:17 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/15 22:23:58 by rlutt            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../incl/ft_ls.h"
 
-char			*ls_dirjoin(const char *s1, const char *s2)
+char			*ls_dirjoin(const char *stra, const char *strb)
 {
-	char	*ns;
+	char		*ns;
 
-	if (s1 == NULL || s2 == NULL)
+	if (stra == NULL || strb == NULL)
 		return (NULL);
-	if (!(ns = ft_strnew((ft_strlen(s1) + 1) + ft_strlen(s2))))
+	if (!(ns = ft_strnew((ft_strlen(stra) + 1) + ft_strlen(strb))))
 		return (NULL);
-	ft_strcpy(ns, (char *)s1);
+	ft_strcpy(ns, (char *)stra);
 	ft_strcat(ns, "/");
-	ft_strcat(ns, s2);
+	ft_strcat(ns, strb);
 	return (ns);
 }

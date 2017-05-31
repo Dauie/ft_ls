@@ -1,18 +1,18 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ls_addnode.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/12 19:00:51 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/24 15:56:20 by rlutt            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../incl/ft_ls.h"
 
-void			ls_addtnoden(t_node **tree, char *name)
+t_lnode			*prep_addnode(char *name)
+{
+	t_lnode		*elem;
+
+	if (!(elem = (t_lnode *)ft_memalloc(sizeof(t_lnode))))
+		return (NULL);
+	ls_initnode(elem);
+	ft_strcpy(elem->name, name);
+	lstat(name, &elem->st);
+	return (elem);
+}
+
+void			ls_addnodename(t_lnode **tree, char *name)
 {
 	t_trinode	tri;
 
@@ -41,7 +41,7 @@ void			ls_addtnoden(t_node **tree, char *name)
 		*tree = tri.el;
 }
 
-void			ls_addtnodet(t_node **tree, char *name)
+void			ls_addtnodetime(t_lnode **tree, char *name)
 {
 	t_trinode	tri;
 
@@ -52,65 +52,7 @@ void			ls_addtnodet(t_node **tree, char *name)
 		while (tri.tt)
 		{
 			tri.nt = tri.tt;
-			if (ls_ct(&tri.el->st, &tri.tt->st, tri.el->name, tri.tt->name) < 0)
-			{
-				tri.tt = tri.tt->left;
-				if (!tri.tt)
-					tri.nt->left = tri.el;
-			}
-			else
-			{
-				tri.tt = tri.tt->right;
-				if (!tri.tt)
-					tri.nt->right = tri.el;
-			}
-		}
-	}
-	else
-		*tree = tri.el;
-}
-
-void			ls_addrnoden(t_rnode **tree, char *name)
-{
-	t_trirnode	tri;
-
-	tri.tt = *tree;
-	tri.el = prep_addrnode(name);
-	if (tri.tt)
-	{
-		while (tri.tt)
-		{
-			tri.nt = tri.tt;
-			if (tri.tt && ft_strcmp(name, tri.tt->nm) < 0)
-			{
-				tri.tt = tri.tt->left;
-				if (!tri.tt)
-					tri.nt->left = tri.el;
-			}
-			else
-			{
-				tri.tt = tri.tt->right;
-				if (!tri.tt)
-					tri.nt->right = tri.el;
-			}
-		}
-	}
-	else
-		*tree = tri.el;
-}
-
-void			ls_addrnodet(t_rnode **tree, char *name)
-{
-	t_trirnode	tri;
-
-	tri.tt = *tree;
-	tri.el = prep_addrnode(name);
-	if (tri.tt)
-	{
-		while (tri.tt)
-		{
-			tri.nt = tri.tt;
-			if (ls_ct(&tri.el->st, &tri.nt->st, tri.el->nm, tri.nt->nm) < 0)
+			if (ls_compt(&tri.el->st, &tri.tt->st, tri.el->name, tri.tt->name) < 0)
 			{
 				tri.tt = tri.tt->left;
 				if (!tri.tt)
