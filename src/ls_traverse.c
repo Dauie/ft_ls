@@ -7,9 +7,9 @@ void				ls_traverse(t_lnode *tree, t_lsnfo *info)
 		if (tree->left)
 			ls_traverse(tree->left, info);
 		if (tree->type == 'f')
-			ls_listfile(tree, info);
+			ls_listfile(info, tree->name);
 		else if (tree->type == 'd')
-			ls_listdir(tree, info);
+			ls_listdir(info, tree->name);
 		if (info->nl)
 		{
 			ft_putchar('\n');
@@ -27,9 +27,9 @@ void				ls_traverserev(t_lnode *tree, t_lsnfo *info)
 		if (tree->right)
 			ls_traverserev(tree->right, info);
 		if (tree->type == 'f')
-			ls_listfile(tree, info);
+			ls_listfile(info, tree->name);
 		else if (tree->type == 'd')
-			ls_listdir(tree, info);
+			ls_listdir(info, tree->name);
 		if (info->nl)
 		{
 			ft_putchar('\n');

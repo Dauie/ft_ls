@@ -29,9 +29,9 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 		if (ls_chkdirnam(info, sd->d_name))
 			continue ;
 		if (info->f_time == TRUE)
-			ls_addnodetime(&tree, sd->d_name);
+			ls_addnodetime(&tree, sd->d_name, 'f');
 		else
-			ls_addnodename(&tree, sd->d_name);
+			ls_addnodename(&tree, sd->d_name, 'f');
 	}
 	ls_manageput(tree, info);
 	/*if (info->f_recur == TRUE)
@@ -40,24 +40,25 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 	return (0);
 }
 
-int					ls_listfile(t_lsnfo *info, char *path, char *file)
+int					ls_listfile(t_lsnfo *info, char *name)
 {
 	DIR				*dir;
 	struct dirent	*sd;
-	char			*full;
+	char			*path;
+	char			*file;
 
+	file = ls_getfile(name);
+	path = ls_getpath(name);
 	if (!(dir = opendir(path)))
 		return (-1);
 	while ((sd = readdir(dir)))
 	{
 		if (ft_strcmp(file, sd->d_name) == 0)
 		{
-			full = ft_dirjoin(path, file);
 			if (info->f_long == TRUE)
-				ls_putfilemeta(full);
+				ls_putmeta(name);
 			else
-				ft_putendl(&full[1]);
-			ft_strdel(&full);
+				ft_putendl(name);
 		}
 	}
 	ft_printf("could not find %s\n", sd->d_name);

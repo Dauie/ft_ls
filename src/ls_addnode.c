@@ -1,6 +1,6 @@
 #include "../incl/ft_ls.h"
 
-t_lnode			*prep_addnode(char *name)
+t_lnode			*prep_addnode(char *name, char type)
 {
 	t_lnode		*elem;
 
@@ -8,16 +8,17 @@ t_lnode			*prep_addnode(char *name)
 		return (NULL);
 	ls_initnode(elem);
 	ft_strcpy(elem->name, name);
+	elem->type = type;
 	lstat(name, &elem->st);
 	return (elem);
 }
 
-void			ls_addnodename(t_lnode **tree, char *name)
+void			ls_addnodename(t_lnode **tree, char *name, char type)
 {
 	t_trinode	tri;
 
-	tri.tt = *tree;
-	tri.el = prep_addnode(name);
+	tri.tt = *trea;
+	tri.el = prep_addnode(name, type);
 	if (tri.tt)
 	{
 		while (tri.tt)
@@ -41,12 +42,12 @@ void			ls_addnodename(t_lnode **tree, char *name)
 		*tree = tri.el;
 }
 
-void			ls_addtnodetime(t_lnode **tree, char *name)
+void			ls_addnodetime(t_lnode **tree, char *name, char type)
 {
 	t_trinode	tri;
 
 	tri.tt = *tree;
-	tri.el = prep_addnode(name);
+	tri.el = prep_addnode(name, type);
 	if (tri.tt)
 	{
 		while (tri.tt)

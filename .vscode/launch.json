@@ -1,0 +1,22 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		
+	{
+		"type": "lldb",
+		"request": "launch",
+		"name": "Launch",
+		"program": "${workspaceRoot}/ft_ls",
+		"args": [],
+		"cwd": "${workspaceRoot}"
+	},
+		{
+			"type": "lldb",
+			"request": "launch",
+			"name": "Debug",
+			"program": "${workspaceRoot}/ft_ls",
+			"args": [],
+			"cwd": "${workspaceRoot}"
+		}
+	]
+}

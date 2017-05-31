@@ -11,4 +11,5 @@ int         ls_error(int errcode, char *errstr)
         ft_printf("ft_ls: illegal option -- %c\n", errstr);
 		ft_printf("usage: ft_ls [-lAaRr] [file ...]\n");    
     }
+	return (1);
 }

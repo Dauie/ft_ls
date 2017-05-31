@@ -1,3 +1,5 @@
+#include "../incl/ft_ls.h"
+
 int				ls_compt(struct stat *elem, struct stat *tmp,
 				char *ename, char *tname)
 {

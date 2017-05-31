@@ -42,8 +42,7 @@ typedef struct		s_cduo
 }					t_cduo;
 
 typedef struct 		s_lnode
-{
-	char			fpath[MXDIRLEN];
+{	
 	char			name[MXNAMLEN];
 	char			type;
 	struct stat		st;
@@ -73,6 +72,10 @@ typedef struct		s_lsnfo
 	t_blean			f_recur;
 }					t_lsnfo;
 
+char				*ls_getpath(char *argstr);
+char				*ls_getfile(char *argstr);
+void				ls_addfile(t_lsnfo *info, char *argstr);
+void				ls_adddir(t_lsnfo *info, char *argstr);
 void				ls_initlsnfo(t_lsnfo *info);
 char				*ls_dirjoin(const char *stra, const char *strb);
 int         		ls_parse(t_lsnfo *info);
@@ -81,16 +84,16 @@ void				ls_initnode(t_lnode *node);
 void				ls_traverse(t_lnode *tree, t_lsnfo *info);
 void				ls_traverserev(t_lnode *tree, t_lsnfo *info);
 int					ls_listdir(t_lsnfo *info, char *dir);
-int					ls_listfile(t_lsnfo *info, char *path, char *file);
+int					ls_listfile(t_lsnfo *info, char *name);
 void				ls_manageput(t_lnode *tree, t_lsnfo *info);
 void				ls_freeinfo(t_lsnfo *info);
-void				ls_addnodename(t_lnode **tree, char *name);
-void				ls_addnodetime(t_lnode **tree, char *name);
+void				ls_addnodename(t_lnode **tree, char *name, char type);
+void				ls_addnodetime(t_lnode **tree, char *name, char type);
 int					ls_compt(struct stat *elem, struct stat *tmp,char *ename, char *tname);
-void				ls_putfilemeta(char *name);
+void				ls_putmeta(char *name);
 void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info);
 void				ls_putlink(char *path);
-void				ls_putmeta(char *path, char *file);
-int					ls_listfile(t_lsnfo *info, char *path, char *file);
+void				ls_putmeta(char *file);
+int					ls_listfile(t_lsnfo *info, char *name);
 int					ls_listdir(t_lsnfo *info, char *dir);
 #endif

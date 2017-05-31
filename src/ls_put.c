@@ -7,7 +7,7 @@ static void		ls_printtree(t_lnode *tree, t_lsnfo *info)
 	if (tree->left)
 		ls_printtree(tree->left, info);
 	if (info->f_long == TRUE)
-		ls_putnodelong(tree, info);
+		ls_putmeta(tree->name);
 	else
 		ft_printf("%s  ", tree->name);
 	ft_printf("%s\t", tree->name);
@@ -22,7 +22,7 @@ static void		ls_revprinttree(t_lnode *tree, t_lsnfo *info)
 	if (tree->right)
 		ls_revprinttree(tree->right, info);
 	if (info->f_long == TRUE)
-		ls_putnodelong(tree, info);
+		ls_putmeta(tree->name);
 	else
 		ft_printf("%s  ", tree->name);
 	if (tree->left)
@@ -34,8 +34,8 @@ void			ls_manageput(t_lnode *tree, t_lsnfo *info)
 	size_t	sz;
 
 	sz = 0;
-	if ((info->f_recur == TRUE))
-		ft_printf("\n%s:\n", tree->fpath);
+	if (info->f_recur == TRUE)
+		ft_printf("\n%s:\n", tree->name);
 	if (info->f_long == TRUE)
 	{
 			ls_getblksz(&sz, tree, info);

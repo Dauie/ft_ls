@@ -1,10 +1,38 @@
 #include "../incl/ft_ls.h"
 
+int					ls_checkfile(t_lsnfo *info, char *argstr)
+{
+	char			*file;
+	char			*path;
+	DIR				*dir;
+	struct 	dirent 	*sd;
+
+	file = ls_getfile(argstr);
+	path = ls_getpath(argstr);
+	if (path && file)
+	{
+		if (!(dir = opendir(path)))
+			return (-1);
+		while ((sd = readdir(dir)))
+		{
+			if (ft_strcmp(sd->d_name, file) == 0)
+				ls_addfile(info, argstr);
+		}
+		closedir(dir);
+	}
+	if (file)
+		ft_strdel(&file);
+	if (path)
+		ft_strdel(&path);
+	return (1);
+}
+
 int			ls_sort(char *argstr, t_lsnfo *info)
 {
 	DIR		*chkdir;
+
 	if ((chkdir = opendir(argstr)))
-		ls_adddir(argstr);
+		ls_adddir(info, argstr);
 	else
 	{
 		if (!(ls_checkfile(info, argstr)))
@@ -50,4 +78,5 @@ int         ls_parse(t_lsnfo *info)
 	}
 	while (info->args[i])
 		ls_sort(info->args[i++], info);
+	return (1);
 }
