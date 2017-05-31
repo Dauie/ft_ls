@@ -16,7 +16,11 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 		while ((sd = readdir(dir)))
 		{
 			if (ft_strcmp(sd->d_name, file) == 0)
+			{
 				ls_addfile(info, argstr);
+				closedir(dir);
+				return (1);
+			}
 		}
 		closedir(dir);
 	}
@@ -71,7 +75,7 @@ int         ls_parse(t_lsnfo *info)
 	int i;
 
 	i = -1;
-	while (info->args[++i][0] == '-')
+	while (info->args[++i] && info->args[i][0] == '-')
 	{
 		if (!(ls_getflags(info, &info->args[i][1])))
 			return (-1);

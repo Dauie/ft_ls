@@ -17,7 +17,7 @@ void			ls_addnodename(t_lnode **tree, char *name, char type)
 {
 	t_trinode	tri;
 
-	tri.tt = *trea;
+	tri.tt = *tree;
 	tri.el = prep_addnode(name, type);
 	if (tri.tt)
 	{

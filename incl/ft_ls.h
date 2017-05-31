@@ -41,6 +41,16 @@ typedef struct		s_cduo
 	char			*dos;
 }					t_cduo;
 
+typedef struct		s_meta
+{
+	struct stat		st;
+	struct passwd	*pw;
+	struct group	*gp;
+	char			*date;
+	char			time[MXNAMLEN];
+	char			*fullpath;
+}					t_meta;
+
 typedef struct 		s_lnode
 {	
 	char			name[MXNAMLEN];
@@ -61,6 +71,7 @@ typedef struct		s_lsnfo
 {
 	char			argflgs[MXTYPLEN];
 	char			**args;
+	char 			cdir[MXDIRLEN];
 	int				nl;
 	t_lnode			*files;
 	t_lnode			*dirs;
@@ -90,10 +101,9 @@ void				ls_freeinfo(t_lsnfo *info);
 void				ls_addnodename(t_lnode **tree, char *name, char type);
 void				ls_addnodetime(t_lnode **tree, char *name, char type);
 int					ls_compt(struct stat *elem, struct stat *tmp,char *ename, char *tname);
-void				ls_putmeta(char *name);
+void				ls_putmeta(t_lsnfo *info, char *name);
 void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info);
 void				ls_putlink(char *path);
-void				ls_putmeta(char *file);
 int					ls_listfile(t_lsnfo *info, char *name);
 int					ls_listdir(t_lsnfo *info, char *dir);
 #endif

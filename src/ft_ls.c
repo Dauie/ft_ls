@@ -4,6 +4,7 @@ int			ls_start(t_lsnfo *info)
 {
 	if (info->files || info->dirs)
 	{
+		ft_strcpy(info->cdir, ".");
 		if (info->files && info->f_rev == FALSE)
 			ls_traverse(info->files, info);
 		else if (info->files && info->f_rev == TRUE)
@@ -25,7 +26,7 @@ int         main(int ac, char **av)
     ls_initlsnfo(&info);
     if (ac > 1)
     {
-        if (!(info.args = ft_tbldup(av, ft_tbllen(av))))
+        if (!(info.args = ft_tbldup(&av[1], ac - 1)))
             return (-1);
         if (!(ls_parse(&info)))
             return (-1);

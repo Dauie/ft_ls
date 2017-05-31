@@ -9,7 +9,10 @@ void				ls_traverse(t_lnode *tree, t_lsnfo *info)
 		if (tree->type == 'f')
 			ls_listfile(info, tree->name);
 		else if (tree->type == 'd')
+		{
+			ft_strcpy(info->cdir, tree->name);
 			ls_listdir(info, tree->name);
+		}
 		if (info->nl)
 		{
 			ft_putchar('\n');

@@ -24,6 +24,7 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 	ddir = NULL;
 	if (!(ddir = opendir(dir)))
 		return (-1);
+	ft_strcpy(info->cdir, dir);
 	while ((sd = readdir(ddir)) != NULL)
 	{
 		if (ls_chkdirnam(info, sd->d_name))
@@ -34,9 +35,8 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 			ls_addnodename(&tree, sd->d_name, 'f');
 	}
 	ls_manageput(tree, info);
-	/*if (info->f_recur == TRUE)
+	if (info->f_recur == TRUE)
 		ls_preprecurs(info);
-	list_cleanup(tree, ddir);*/
 	return (0);
 }
 
@@ -56,9 +56,13 @@ int					ls_listfile(t_lsnfo *info, char *name)
 		if (ft_strcmp(file, sd->d_name) == 0)
 		{
 			if (info->f_long == TRUE)
-				ls_putmeta(name);
+			{
+				ft_strcpy(info->cdir, path);
+				ls_putmeta(info, file);
+			}
 			else
 				ft_putendl(name);
+			return (1);
 		}
 	}
 	ft_printf("could not find %s\n", sd->d_name);

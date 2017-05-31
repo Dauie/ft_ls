@@ -47,8 +47,6 @@ void				ls_putperm(struct stat *st)
 void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info)
 {
 	struct stat		st;
-	char			*path;
-	char			*file;
 	char			*full;
 
 	if (!tree)
@@ -57,14 +55,11 @@ void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info)
 		ls_getblksz(sz, tree->left, info);
 	if (tree->right)
 		ls_getblksz(sz, tree->right, info);
-	path = ls_getpath(tree->name);
-	file = ls_getfile(tree->name);
-	full = ls_dirjoin(file, path);
+	if (!(full = ls_dirjoin(info->cdir, tree->name)))
+		return ;
 	lstat(full, &st);
 	*sz += st.st_blocks;
-	ft_strdel(&path);
-	ft_strdel(&file);
-	ft_strdel(&path);
+	ft_strdel(&full);
 }
 
 void				ls_putlink(char *path)
@@ -77,23 +72,20 @@ void				ls_putlink(char *path)
 	ft_putstr(buf);
 }
 
-void				ls_putmeta(char *name)
+void				ls_putmeta(t_lsnfo *info, char *name)
 {
-	struct stat		st;
-	struct passwd	*pw;
-	struct group	*gp;
-	char			*date;
-	char			time[MXNAMLEN];
+	t_meta		meta;
 
-	lstat(name, &st);
-	date = ctime(&st.st_mtime);
-	ft_strcpy(time, date);
-	ls_putperm(&st);
-	pw = getpwuid(st.st_uid);
-	gp = getgrgid(st.st_gid);
-	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", st.st_nlink, pw->pw_name,
-			gp->gr_name, st.st_size, time, name);
-	if (S_ISLNK(st.st_mode))
+	meta.fullpath = ls_dirjoin(info->cdir, name);
+	lstat(meta.fullpath, &meta.st);
+	meta.date = ctime(&meta.st.st_mtime);
+	ft_strcpy(meta.time, meta.date);
+	ls_putperm(&meta.st);
+	meta.pw = getpwuid(meta.st.st_uid);
+	meta.gp = getgrgid(meta.st.st_gid);
+	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", meta.st.st_nlink, meta.pw->pw_name,
+			meta.gp->gr_name, meta.st.st_size, meta.time, name);
+	if (S_ISLNK(meta.st.st_mode))
 		ls_putlink(name);
 	ft_putchar('\n');
 }
