@@ -34,7 +34,7 @@ void			ls_manageput(t_lnode *tree, t_lsnfo *info)
 
 	sz = 0;
 	if (info->f_recur == TRUE)
-		ft_printf("\n%s:\n", tree->name);
+		ft_printf("\n%s:\n", info->cdir);
 	if (info->f_long == TRUE)
 	{
 			ls_getblksz(&sz, tree, info);

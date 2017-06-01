@@ -52,6 +52,8 @@ static int ls_getflags(t_lsnfo *info, char *argstr)
 	i = -1;
 	while (argstr[++i])
 	{
+		*info->p_args = argstr[i];
+		info->p_args++;
 		if (argstr[i] == 'a')
 			info->f_all = TRUE;
 		else if (argstr[i] == 'A')

@@ -12,6 +12,9 @@ void		ls_initlsnfo(t_lsnfo *info)
     info->f_rev = FALSE;
     info->f_time = FALSE;
     info->f_recur = FALSE;
+
+	info->argflgs[0] = '-';
+	info->p_args = &info->argflgs[1];
 }
 
 void	ls_initnode(t_lnode *node)

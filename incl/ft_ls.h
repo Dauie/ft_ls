@@ -60,6 +60,15 @@ typedef struct 		s_lnode
 	struct s_lnode	*right;
 }					t_lnode;
 
+typedef struct		s_lsdir
+{
+	DIR				*p_dir;
+	struct dirent	*sd;
+	struct stat		st;
+	t_lnode			*r_tree;
+	char			*name;
+}
+					t_lsdir;
 typedef struct 		s_trinode
 {
 	t_lnode			*el;
@@ -69,6 +78,7 @@ typedef struct 		s_trinode
 
 typedef struct		s_lsnfo
 {
+	char			*p_args;
 	char			argflgs[MXTYPLEN];
 	char			**args;
 	char 			cdir[MXDIRLEN];
@@ -83,6 +93,9 @@ typedef struct		s_lsnfo
 	t_blean			f_recur;
 }					t_lsnfo;
 
+int					main(int ac, char **av);
+int					ls_preprecurs(t_lsnfo *info);
+void				ls_freetree(t_lnode **tree);
 char				*ls_getpath(char *argstr);
 char				*ls_getfile(char *argstr);
 void				ls_addfile(t_lsnfo *info, char *argstr);
