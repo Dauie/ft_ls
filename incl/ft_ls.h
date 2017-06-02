@@ -83,6 +83,7 @@ typedef struct		s_lsnfo
 	char			**args;
 	char 			cdir[MXDIRLEN];
 	int				nl;
+	int 			dircnt;
 	t_lnode			*files;
 	t_lnode			*dirs;
 	t_blean			f_stop;

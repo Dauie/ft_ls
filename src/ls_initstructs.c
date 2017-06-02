@@ -3,19 +3,22 @@
 void		ls_initlsnfo(t_lsnfo *info)
 {
     info->args = NULL;
+	ft_bzero(info->argflgs, MXTYPLEN);
+	info->argflgs[0] = '-';
+	info->p_args = &info->argflgs[1];
+	ft_bzero(info->cdir, MXDIRLEN);
     info->files = NULL;
     info->dirs = NULL;
+	info->dircnt = 0;
 	info->nl = 0;
+	info->f_stop = FALSE;
     info->f_long = FALSE;
     info->f_all = FALSE;
     info->f_jhidden = FALSE;
     info->f_rev = FALSE;
     info->f_time = FALSE;
     info->f_recur = FALSE;
-	ft_bzero(info->argflgs, MXTYPLEN);
-	ft_bzero(info->cdir, MXDIRLEN);
-	info->argflgs[0] = '-';
-	info->p_args = &info->argflgs[1];
+
 }
 
 void	ls_initnode(t_lnode *node)

@@ -7,6 +7,7 @@ t_lnode			*prep_addnode(char *name, char type)
 	if (!(elem = (t_lnode *)ft_memalloc(sizeof(t_lnode))))
 		return (NULL);
 	ls_initnode(elem);
+	ft_bzero(elem->name, MXNAMLEN);
 	ft_strcpy(elem->name, name);
 	elem->type = type;
 	lstat(name, &elem->st);

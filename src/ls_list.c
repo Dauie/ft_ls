@@ -35,6 +35,7 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 			ls_addnodename(&tree, sd->d_name, 'f');
 	}
 	ls_manageput(tree, info);
+	closedir(ddir);
 	if (info->f_recur == TRUE)
 		ls_preprecurs(info);
 	return (0);
@@ -62,9 +63,11 @@ int					ls_listfile(t_lsnfo *info, char *name)
 			}
 			else
 				ft_putendl(name);
+			closedir(dir);
 			return (1);
 		}
 	}
+	closedir(dir);
 	ft_printf("could not find %s\n", sd->d_name);
 	return (0);
 }

@@ -49,14 +49,18 @@ int					ls_recurse(t_lsnfo *info, t_lnode *dirs)
 {
 	char			**args;
 
+	args = NULL;
 	if (dirs->left)
 		ls_recurse(info, dirs->left);
 	args = NULL;
 	if (!(args = (char **)ft_memalloc(sizeof(char *) * 4)))
 		return (-1);
-	args[0] = ft_strdup("ft_ls");
-	args[1] = ft_strdup(info->argflgs);
-	args[2] = ft_strdup(dirs->name);
+	if (!(args[0] = ft_strdup("ft_ls")))
+		return (-1);
+	if (!(args[1] = ft_strdup(info->argflgs)))
+		return (-1);
+	if (!(args[2] = ft_strdup(dirs->name)))
+		return (-1);
 	main(3, args);
 	if (args)
 		ft_tbldel(args);
@@ -74,9 +78,12 @@ int					ls_revrecurse(t_lsnfo *info, t_lnode *dirs)
 	args = NULL;
 	if (!(args = (char **)ft_memalloc(sizeof(char *) * 4)))
 		return (-1);
-	args[0] = ft_strdup("ft_ls");
-	args[1] = ft_strdup(info->argflgs);
-	args[2] = ft_strdup(dirs->name);
+	if (!(args[0] = ft_strdup("ft_ls")))
+		return (-1);
+	if (!(args[1] = ft_strdup(info->argflgs)))
+		return (-1);
+	if (!(args[2] = ft_strdup(dirs->name)))
+		return (-1);
 	main(3, args);
 	if (args)
 		ft_tbldel(args);
@@ -92,7 +99,7 @@ int					ls_preprecurs(t_lsnfo *info)
 	dirs = NULL;
 	if (!(dirs = ls_getdirlist(info->cdir, info)))
 		return (-1);
-	if (info->f_rev)
+	if (info->f_rev == TRUE)
 		ls_revrecurse(info, dirs);
 	else
 		ls_recurse(info, dirs);

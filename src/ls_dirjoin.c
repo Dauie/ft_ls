@@ -9,7 +9,7 @@ char		*ns;
 	if (!(ns = ft_strnew((ft_strlen(stra) + 1) + ft_strlen(strb))))
 		return (NULL);
 	ft_strcpy(ns, (char *)stra);
-	if (stra[0] != '/')
+	if (stra[ft_strlen(ns) - 1] != '/')
 		ft_strcat(ns, "/");
 	ft_strcat(ns, strb);
 	return (ns);

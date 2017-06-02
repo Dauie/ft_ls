@@ -41,11 +41,12 @@ int			ls_sort(char *argstr, t_lsnfo *info)
 	{
 		if ((ls_checkfile(info, argstr)) == -1)
 		{
-			ft_printf("ft_ls: %s no such file or directory\n", argstr);
+			ft_printf("ft_ls: %s: No such file or directory\n", argstr);
 			return (-1);
 		}
 		
 	}
+	closedir(chkdir);
 	return (1);
 }
 

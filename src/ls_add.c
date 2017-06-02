@@ -14,4 +14,5 @@ void			ls_adddir(t_lsnfo *info, char *argstr)
 		ls_addnodetime(&info->dirs, argstr, 'd');
 	else
 		ls_addnodename(&info->dirs, argstr, 'd');
+	info->dircnt++;
 }

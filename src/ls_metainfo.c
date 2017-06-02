@@ -64,9 +64,10 @@ void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info)
 
 void				ls_putlink(char *path)
 {
-	char			buf[MXNAMLEN];
+	char			buf[MXDIRLEN];
 
-	if (!(readlink(path, buf, MXNAMLEN)))
+	ft_bzero(buf, MXDIRLEN);
+	if (!(readlink(path, buf, MXDIRLEN)))
 		return ;
 	ft_putstr(" -> ");
 	ft_putstr(buf);
@@ -76,7 +77,8 @@ void				ls_putmeta(t_lsnfo *info, char *name)
 {
 	t_meta		meta;
 
-	meta.fullpath = ls_dirjoin(info->cdir, name);
+	if (!(meta.fullpath = ls_dirjoin(info->cdir, name)))
+		return ;
 	lstat(meta.fullpath, &meta.st);
 	meta.date = ctime(&meta.st.st_mtime);
 	ft_strcpy(meta.time, meta.date);
@@ -84,8 +86,9 @@ void				ls_putmeta(t_lsnfo *info, char *name)
 	meta.pw = getpwuid(meta.st.st_uid);
 	meta.gp = getgrgid(meta.st.st_gid);
 	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", meta.st.st_nlink, meta.pw->pw_name,
-			meta.gp->gr_name, meta.st.st_size, meta.time, name);
+			meta.gp->gr_name, meta.st.st_size, &meta.time[4], name);
 	if (S_ISLNK(meta.st.st_mode))
-		ls_putlink(name);
+		ls_putlink(meta.fullpath);
+	ft_strdel(&meta.fullpath);
 	ft_putchar('\n');
 }

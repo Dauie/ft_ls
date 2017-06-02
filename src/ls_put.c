@@ -33,7 +33,7 @@ void			ls_manageput(t_lnode *tree, t_lsnfo *info)
 	size_t	sz;
 
 	sz = 0;
-	if (info->f_recur == TRUE && ft_strcmp(".", info->cdir) != 0)
+	if ((info->f_recur == TRUE && ft_strcmp(".", info->cdir) != 0) || info->dircnt--)
 		ft_printf("\n%s:\n", info->cdir);
 	if (info->f_long == TRUE)
 	{
