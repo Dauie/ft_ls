@@ -12,7 +12,8 @@ void		ls_initlsnfo(t_lsnfo *info)
     info->f_rev = FALSE;
     info->f_time = FALSE;
     info->f_recur = FALSE;
-
+	ft_bzero(info->argflgs, MXTYPLEN);
+	ft_bzero(info->cdir, MXDIRLEN);
 	info->argflgs[0] = '-';
 	info->p_args = &info->argflgs[1];
 }

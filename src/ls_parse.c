@@ -28,7 +28,7 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 		ft_strdel(&file);
 	if (path)
 		ft_strdel(&path);
-	return (1);
+	return (-1);
 }
 
 int			ls_sort(char *argstr, t_lsnfo *info)
@@ -39,8 +39,12 @@ int			ls_sort(char *argstr, t_lsnfo *info)
 		ls_adddir(info, argstr);
 	else
 	{
-		if (!(ls_checkfile(info, argstr)))
-			ls_error(-1, argstr);
+		if ((ls_checkfile(info, argstr)) == -1)
+		{
+			ft_printf("ft_ls: %s no such file or directory\n", argstr);
+			return (-1);
+		}
+		
 	}
 	return (1);
 }
@@ -67,7 +71,10 @@ static int ls_getflags(t_lsnfo *info, char *argstr)
 		else if (argstr[i] == 't')
 			info->f_time = TRUE;
 		else
-			return (ls_error(-3, argstr));
+		{
+			argstr[i + 1] = '\0';
+			return (ls_error(-3, &argstr[i]));
+		}
 	}
 	return (1);
 }
@@ -83,6 +90,9 @@ int         ls_parse(t_lsnfo *info)
 			return (-1);
 	}
 	while (info->args[i])
-		ls_sort(info->args[i++], info);
+	{
+		if ((ls_sort(info->args[i++], info)) == -1)
+			info->f_stop = TRUE;
+	}
 	return (1);
 }

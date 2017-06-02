@@ -14,8 +14,8 @@ int			ls_start(t_lsnfo *info)
 		else if (info->dirs && info->f_rev == TRUE)
 			ls_traverserev(info->dirs, info);
 	}
-	else
-		ls_listdir(info, "./");
+	else if (info->f_stop == FALSE)
+		ls_listdir(info, ".");
 	return (1);
 }
 
@@ -28,7 +28,7 @@ int         main(int ac, char **av)
     {
         if (!(info.args = ft_tbldup(&av[1], ac - 1)))
             return (-1);
-        if (!(ls_parse(&info)))
+        if ((ls_parse(&info)) < 0)
             return (-1);
     }
 	ls_start(&info);

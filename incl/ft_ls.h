@@ -85,6 +85,7 @@ typedef struct		s_lsnfo
 	int				nl;
 	t_lnode			*files;
 	t_lnode			*dirs;
+	t_blean			f_stop;
 	t_blean			f_long;
 	t_blean			f_all;
 	t_blean			f_jhidden;

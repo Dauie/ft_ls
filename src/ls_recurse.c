@@ -65,6 +65,26 @@ int					ls_recurse(t_lsnfo *info, t_lnode *dirs)
 	return (0);
 }
 
+int					ls_revrecurse(t_lsnfo *info, t_lnode *dirs)
+{
+	char			**args;
+
+	if (dirs->right)
+		ls_recurse(info, dirs->right);
+	args = NULL;
+	if (!(args = (char **)ft_memalloc(sizeof(char *) * 4)))
+		return (-1);
+	args[0] = ft_strdup("ft_ls");
+	args[1] = ft_strdup(info->argflgs);
+	args[2] = ft_strdup(dirs->name);
+	main(3, args);
+	if (args)
+		ft_tbldel(args);
+	if (dirs->left)
+		ls_recurse(info, dirs->left);
+	return (0);
+}
+
 int					ls_preprecurs(t_lsnfo *info)
 {
 	t_lnode			*dirs;
@@ -72,7 +92,10 @@ int					ls_preprecurs(t_lsnfo *info)
 	dirs = NULL;
 	if (!(dirs = ls_getdirlist(info->cdir, info)))
 		return (-1);
-	ls_recurse(info, dirs);
+	if (info->f_rev)
+		ls_revrecurse(info, dirs);
+	else
+		ls_recurse(info, dirs);
 	ls_freetree(&dirs);
 	return (0);
 }
