@@ -3,11 +3,9 @@
 char				*ls_getfile(char *argstr)
 {
 	char			*end;
-	char			*ret;
 
 	end = NULL;
-	ret = NULL;
-	if (!(end = ft_strrchr(argstr, '/')))
+if (!(end = ft_strrchr(argstr, '/')))
 		return (ft_strdup(argstr));
 	else
 		return (ft_strdup(end + 1));
@@ -16,10 +14,8 @@ char				*ls_getfile(char *argstr)
 char				*ls_getpath(char *argstr)
 {
 	char			*end;
-	char			*ret;
 
 	end = NULL;
-	ret = NULL;
 	if (!(end = ft_strrchr(argstr, '/')))
 		return (ft_strdup("./"));
 	else

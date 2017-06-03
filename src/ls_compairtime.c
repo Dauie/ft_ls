@@ -6,16 +6,16 @@ int				ls_compt(struct stat *elem, struct stat *tmp,
 	int		val;
 
 	val = 0;
-	if (elem->st_mtimespec.tv_sec == tmp->st_mtimespec.tv_sec)
+	if (elem->st_mtim.tv_sec == tmp->st_mtim.tv_sec)
 	{
-		if (elem->st_mtimespec.tv_nsec == tmp->st_mtimespec.tv_nsec)
+		if (elem->st_mtim.tv_nsec == tmp->st_mtim.tv_nsec)
 		{
 			if (ft_strcmp(ename, tname) < 0)
 				val = -1;
 			else
 				val = 1;
 		}
-		else if (elem->st_mtimespec.tv_nsec < tmp->st_mtimespec.tv_nsec)
+		else if (elem->st_mtim.tv_nsec < tmp->st_mtim.tv_nsec)
 			val = 1;
 		else
 			val = -1;
