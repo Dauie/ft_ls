@@ -68,7 +68,6 @@ typedef struct		s_lsdir
 	t_lnode			*r_tree;
 	char			*name;
 }					t_lsdir;
-
 typedef struct 		s_trinode
 {
 	t_lnode			*el;
@@ -101,7 +100,7 @@ void				ls_freetree(t_lnode **tree);
 char				*ls_getpath(char *argstr);
 char				*ls_getfile(char *argstr);
 void				ls_addfile(t_lsnfo *info, char *argstr);
-int					ls_adddir(t_lsnfo *info, char *argstr);
+void				ls_adddir(t_lsnfo *info, char *argstr);
 void				ls_initlsnfo(t_lsnfo *info);
 char				*ls_dirjoin(const char *stra, const char *strb);
 int         		ls_parse(t_lsnfo *info);

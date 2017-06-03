@@ -2,6 +2,8 @@
 
 int			ls_start(t_lsnfo *info)
 {
+	if (info->f_all && info->f_jhidden)
+		info->f_all = FALSE;
 	if (info->files || info->dirs)
 	{
 		ft_strcpy(info->cdir, ".");
