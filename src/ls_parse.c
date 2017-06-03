@@ -9,21 +9,17 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 
 	file = ls_getfile(argstr);
 	path = ls_getpath(argstr);
-	if (path && file)
+	if (!(dir = opendir(path)))
+		return (-1);
+	while ((sd = readdir(dir)))
 	{
-		if (!(dir = opendir(path)))
-			return (-1);
-		while ((sd = readdir(dir)))
+		if (ft_strcmp(sd->d_name, file) == 0)
 		{
-			if (ft_strcmp(sd->d_name, file) == 0)
-			{
-				ls_addfile(info, argstr);
-				closedir(dir);
-				return (1);
-			}
+			ls_addfile(info, argstr);
+			return (1);
 		}
-		closedir(dir);
 	}
+	closedir(dir);
 	if (file)
 		ft_strdel(&file);
 	if (path)
@@ -36,7 +32,10 @@ int			ls_sort(char *argstr, t_lsnfo *info)
 	DIR		*chkdir;
 
 	if ((chkdir = opendir(argstr)))
+	{
 		ls_adddir(info, argstr);
+		closedir(chkdir);
+	}
 	else
 	{
 		if ((ls_checkfile(info, argstr)) == -1)
@@ -44,9 +43,7 @@ int			ls_sort(char *argstr, t_lsnfo *info)
 			ft_printf("ft_ls: %s: No such file or directory\n", argstr);
 			return (-1);
 		}
-		
 	}
-	closedir(chkdir);
 	return (1);
 }
 

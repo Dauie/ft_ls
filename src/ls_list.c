@@ -24,6 +24,7 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 	ddir = NULL;
 	if (!(ddir = opendir(dir)))
 		return (-1);
+
 	ft_strcpy(info->cdir, dir);
 	while ((sd = readdir(ddir)) != NULL)
 	{
@@ -68,6 +69,5 @@ int					ls_listfile(t_lsnfo *info, char *name)
 		}
 	}
 	closedir(dir);
-	ft_printf("could not find %s\n", sd->d_name);
 	return (0);
 }
