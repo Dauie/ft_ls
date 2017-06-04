@@ -24,7 +24,6 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 	ddir = NULL;
 	if (!(ddir = opendir(dir)))
 		return (-1);
-
 	ft_strcpy(info->cdir, dir);
 	while ((sd = readdir(ddir)) != NULL)
 	{
@@ -37,6 +36,7 @@ int					ls_listdir(t_lsnfo *info, char *dir)
 	}
 	ls_manageput(tree, info);
 	closedir(ddir);
+	ls_freetree(&tree);
 	if (info->f_recur == TRUE)
 		ls_preprecurs(info);
 	return (0);
@@ -68,6 +68,8 @@ int					ls_listfile(t_lsnfo *info, char *name)
 			return (1);
 		}
 	}
+	ft_strdel(&file);
+	ft_strdel(&path);
 	closedir(dir);
 	return (0);
 }

@@ -49,6 +49,7 @@ void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info)
 	struct stat		st;
 	char			*full;
 
+	full = NULL;
 	if (!tree)
 		return ;
 	if (tree->left)
@@ -77,6 +78,9 @@ void				ls_putmeta(t_lsnfo *info, char *name)
 {
 	t_meta		meta;
 
+	if (!name)
+		return ;
+	ft_bzero(meta.time, MXNAMLEN);
 	if (!(meta.fullpath = ls_dirjoin(info->cdir, name)))
 		return ;
 	lstat(meta.fullpath, &meta.st);

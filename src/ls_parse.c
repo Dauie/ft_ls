@@ -15,15 +15,16 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 	{
 		if (ft_strcmp(sd->d_name, file) == 0)
 		{
+			ft_strdel(&file);
+			ft_strdel(&path);
 			ls_addfile(info, argstr);
+			
 			return (1);
 		}
 	}
 	closedir(dir);
-	if (file)
-		ft_strdel(&file);
-	if (path)
-		ft_strdel(&path);
+	ft_strdel(&file);
+	ft_strdel(&path);
 	return (-1);
 }
 

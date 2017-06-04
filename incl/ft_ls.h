@@ -68,6 +68,7 @@ typedef struct		s_lsdir
 	t_lnode			*r_tree;
 	char			*name;
 }					t_lsdir;
+
 typedef struct 		s_trinode
 {
 	t_lnode			*el;
