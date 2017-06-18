@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_parse.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/17 15:10:27 by rlutt             #+#    #+#             */
+/*   Updated: 2017/06/17 16:16:10 by rlutt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/ft_ls.h"
 
 int					ls_checkfile(t_lsnfo *info, char *argstr)
@@ -5,7 +17,7 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 	char			*file;
 	char			*path;
 	DIR				*dir;
-	struct 	dirent 	*sd;
+	struct dirent	*sd;
 
 	file = ls_getfile(argstr);
 	path = ls_getpath(argstr);
@@ -18,7 +30,6 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 			ft_strdel(&file);
 			ft_strdel(&path);
 			ls_addfile(info, argstr);
-			
 			return (1);
 		}
 	}
@@ -28,9 +39,9 @@ int					ls_checkfile(t_lsnfo *info, char *argstr)
 	return (-1);
 }
 
-int			ls_sort(char *argstr, t_lsnfo *info)
+int					ls_sort(char *argstr, t_lsnfo *info)
 {
-	DIR		*chkdir;
+	DIR				*chkdir;
 
 	if ((chkdir = opendir(argstr)))
 	{
@@ -48,11 +59,8 @@ int			ls_sort(char *argstr, t_lsnfo *info)
 	return (1);
 }
 
-static int ls_getflags(t_lsnfo *info, char *argstr)
+static int			ls_getflags(t_lsnfo *info, char *argstr, int i)
 {
-	int i;
-
-	i = -1;
 	while (argstr[++i])
 	{
 		*info->p_args = argstr[i];
@@ -78,14 +86,14 @@ static int ls_getflags(t_lsnfo *info, char *argstr)
 	return (1);
 }
 
-int         ls_parse(t_lsnfo *info)
+int					ls_parse(t_lsnfo *info)
 {
-	int i;
+	int				i;
 
 	i = -1;
 	while (info->args[++i] && info->args[i][0] == '-')
 	{
-		if (!(ls_getflags(info, &info->args[i][1])))
+		if (!(ls_getflags(info, &info->args[i][1], -1)))
 			return (-1);
 	}
 	while (info->args[i])

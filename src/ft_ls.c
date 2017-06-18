@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/16 14:48:24 by rlutt             #+#    #+#             */
+/*   Updated: 2017/06/17 20:49:21 by rlutt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/ft_ls.h"
 
-int			ls_start(t_lsnfo *info)
+int				ls_start(t_lsnfo *info)
 {
 	if (info->f_all && info->f_jhidden)
 		info->f_all = FALSE;
@@ -21,18 +33,33 @@ int			ls_start(t_lsnfo *info)
 	return (1);
 }
 
-int         main(int ac, char **av)
+int				main(int ac, char **av)
 {
-    t_lsnfo info;
+	t_lsnfo		info;
 
-    ls_initlsnfo(&info);
-    if (ac > 1)
-    {
-        if (!(info.args = ft_tbldup(&av[1], ac - 1)))
-            return (-1);
-        if ((ls_parse(&info)) < 0)
-            return (-1);
-    }
+	ls_initlsnfo(&info);
+	if (ac > 1)
+	{
+		if (!(info.args = ft_tbldup(&av[1], ac - 1)))
+			return (-1);
+		if ((ls_parse(&info)) < 0)
+			return (-1);
+	}
 	ls_start(&info);
 	ls_freeinfo(&info);
+}
+
+int				ls_preprecurs(t_lsnfo *info)
+{
+	t_lnode		*dirs;
+
+	dirs = NULL;
+	if (!(dirs = ls_getdirlist(info->cdir, info)))
+		return (-1);
+	if (info->f_rev == TRUE)
+		ls_revrecurse(info, dirs);
+	else
+		ls_recurse(info, dirs);
+	ls_freetree(&dirs);
+	return (0);
 }

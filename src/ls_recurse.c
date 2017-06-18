@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_recurse.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/17 16:02:23 by rlutt             #+#    #+#             */
+/*   Updated: 2017/06/17 17:24:27 by rlutt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/ft_ls.h"
 
-int				ls_initlist(t_lsdir *list, char *dir)
+int					ls_initlist(t_lsdir *list, char *dir)
 {
 	list->r_tree = NULL;
 	list->name = NULL;
@@ -10,7 +22,7 @@ int				ls_initlist(t_lsdir *list, char *dir)
 		return (1);
 }
 
-void 			ls_closelist(t_lsdir *list)
+void				ls_closelist(t_lsdir *list)
 {
 	ft_strdel(&list->name);
 	closedir(list->p_dir);
@@ -89,20 +101,5 @@ int					ls_revrecurse(t_lsnfo *info, t_lnode *dirs)
 		ft_tbldel(args);
 	if (dirs->left)
 		ls_recurse(info, dirs->left);
-	return (0);
-}
-
-int					ls_preprecurs(t_lsnfo *info)
-{
-	t_lnode			*dirs;
-
-	dirs = NULL;
-	if (!(dirs = ls_getdirlist(info->cdir, info)))
-		return (-1);
-	if (info->f_rev == TRUE)
-		ls_revrecurse(info, dirs);
-	else
-		ls_recurse(info, dirs);
-	ls_freetree(&dirs);
 	return (0);
 }

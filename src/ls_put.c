@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_put.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/17 16:05:08 by rlutt             #+#    #+#             */
+/*   Updated: 2017/06/17 20:50:33 by rlutt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/ft_ls.h"
 
 static void		ls_printtree(t_lnode *tree, t_lsnfo *info)
@@ -33,13 +45,14 @@ void			ls_manageput(t_lnode *tree, t_lsnfo *info)
 	size_t	sz;
 
 	sz = 0;
-	if ((info->f_recur == TRUE && ft_strcmp(".", info->cdir) != 0) || info->dircnt--)
+	if ((info->f_recur == TRUE && ft_strcmp(".", info->cdir) != 0)
+		|| info->dircnt--)
 		ft_printf("\n%s:\n", info->cdir);
 	if (info->f_long == TRUE)
 	{
-			ls_getblksz(&sz, tree, info);
-			if (sz > 0)
-				ft_printf("total %lld\n", sz);
+		ls_getblksz(&sz, tree, info);
+		if (sz > 0)
+			ft_printf("total %lld\n", sz);
 	}
 	if (info->f_rev == TRUE)
 		ls_revprinttree(tree, info);

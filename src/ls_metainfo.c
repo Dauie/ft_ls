@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ls_metainfo.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/06/17 15:04:53 by rlutt             #+#    #+#             */
+/*   Updated: 2017/06/17 16:18:25 by rlutt            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../incl/ft_ls.h"
 
 static void			ls_putpermtype(struct stat *st)
@@ -58,8 +70,8 @@ void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info)
 		ls_getblksz(sz, tree->right, info);
 	if (!(full = ls_dirjoin(info->cdir, tree->name)))
 		return ;
-	lstat(full, &st);
-	*sz += st.st_blocks;
+	if ((lstat(full, &st) != -1))
+		*sz += st.st_blocks;
 	ft_strdel(&full);
 }
 
@@ -83,16 +95,20 @@ void				ls_putmeta(t_lsnfo *info, char *name)
 	ft_bzero(meta.time, MXNAMLEN);
 	if (!(meta.fullpath = ls_dirjoin(info->cdir, name)))
 		return ;
-	lstat(meta.fullpath, &meta.st);
-	meta.date = ctime(&meta.st.st_mtime);
-	ft_strcpy(meta.time, meta.date);
-	ls_putperm(&meta.st);
-	meta.pw = getpwuid(meta.st.st_uid);
-	meta.gp = getgrgid(meta.st.st_gid);
-	ft_printf("%3lld % 6s %7s % 6lld %.12s %s", meta.st.st_nlink, meta.pw->pw_name,
-			meta.gp->gr_name, meta.st.st_size, &meta.time[4], name);
+	if (lstat(meta.fullpath, &meta.st) != -1)
+	{
+		meta.date = ctime(&meta.st.st_mtime);
+		ft_strcpy(meta.time, meta.date);
+		meta.pw = getpwuid(meta.st.st_uid);
+		meta.gp = getgrgid(meta.st.st_gid);
+		ls_putperm(&meta.st);
+		ft_printf("%3lld % 6s %7s % 6lld %.12s %s\n", meta.st.st_nlink,
+		meta.pw->pw_name, meta.gp->gr_name, meta.st.st_size,
+		&meta.time[4], name);
+	}
+	else
+		ft_printf("ft_ls: %s: No such file or directory\n", meta.fullpath);
 	if (S_ISLNK(meta.st.st_mode))
 		ls_putlink(meta.fullpath);
 	ft_strdel(&meta.fullpath);
-	ft_putchar('\n');
 }

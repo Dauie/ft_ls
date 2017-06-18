@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ls.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlutt <rlutt@student.42.fr>                +#+  +:+       +#+        */
+/*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/04/18 11:11:10 by rlutt             #+#    #+#             */
-/*   Updated: 2017/05/26 20:12:29 by rlutt            ###   ########.fr       */
+/*   Created: 2017/06/17 23:02:01 by rlutt             #+#    #+#             */
+/*   Updated: 2017/06/17 23:05:45 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,24 @@ typedef struct		s_meta
 	char			*fullpath;
 }					t_meta;
 
-typedef struct 		s_lnode
-{	
+typedef struct		s_fmeta
+{
+	DIR				*dir;
+	struct dirent	*sd;
+	char			*path;
+	char			*file;
+}					t_fmeta;
+
+typedef	struct		s_lnode
+{
 	char			name[MXNAMLEN];
 	char			type;
 	struct stat		st;
-	struct s_lnode 	*left;
+	struct s_lnode	*left;
 	struct s_lnode	*right;
 }					t_lnode;
 
-typedef struct		s_lsdir
+typedef	struct		s_lsdir
 {
 	DIR				*p_dir;
 	struct dirent	*sd;
@@ -69,7 +77,7 @@ typedef struct		s_lsdir
 	char			*name;
 }					t_lsdir;
 
-typedef struct 		s_trinode
+typedef struct		s_trinode
 {
 	t_lnode			*el;
 	t_lnode			*tt;
@@ -81,9 +89,9 @@ typedef struct		s_lsnfo
 	char			*p_args;
 	char			argflgs[MXTYPLEN];
 	char			**args;
-	char 			cdir[MXDIRLEN];
+	char			cdir[MXDIRLEN];
 	int				nl;
-	int 			dircnt;
+	int				dircnt;
 	t_lnode			*files;
 	t_lnode			*dirs;
 	t_blean			f_stop;
@@ -104,8 +112,8 @@ void				ls_addfile(t_lsnfo *info, char *argstr);
 void				ls_adddir(t_lsnfo *info, char *argstr);
 void				ls_initlsnfo(t_lsnfo *info);
 char				*ls_dirjoin(const char *stra, const char *strb);
-int         		ls_parse(t_lsnfo *info);
-int         		ls_error(int errcode, char *errstr);
+int					ls_parse(t_lsnfo *info);
+int					ls_error(int errcode, char *errstr);
 void				ls_initnode(t_lnode *node);
 void				ls_traverse(t_lnode *tree, t_lsnfo *info);
 void				ls_traverserev(t_lnode *tree, t_lsnfo *info);
@@ -115,10 +123,16 @@ void				ls_manageput(t_lnode *tree, t_lsnfo *info);
 void				ls_freeinfo(t_lsnfo *info);
 void				ls_addnodename(t_lnode **tree, char *name, char type);
 void				ls_addnodetime(t_lnode **tree, char *name, char type);
-int					ls_compt(struct stat *elem, struct stat *tmp,char *ename, char *tname);
+int					ls_compt(struct stat *elem, struct stat *tmp, char *ename,
+					char *tname);
 void				ls_putmeta(t_lsnfo *info, char *name);
 void				ls_getblksz(size_t *sz, t_lnode *tree, t_lsnfo *info);
 void				ls_putlink(char *path);
 int					ls_listfile(t_lsnfo *info, char *name);
 int					ls_listdir(t_lsnfo *info, char *dir);
+int					ls_preprecurs(t_lsnfo *info);
+t_lnode				*ls_getdirlist(char *dir, t_lsnfo *info);
+int					ls_revrecurse(t_lsnfo *info, t_lnode *dirs);
+void				ls_manage_dirs(t_lsnfo *info, t_lnode *tree);
+int					ls_recurse(t_lsnfo *info, t_lnode *dirs);
 #endif
