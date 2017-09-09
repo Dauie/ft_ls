@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 16:02:23 by rlutt             #+#    #+#             */
-/*   Updated: 2017/06/17 17:24:27 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/07/28 15:32:13 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int					ls_recurse(t_lsnfo *info, t_lnode *dirs)
 		return (-1);
 	main(3, args);
 	if (args)
-		ft_tbldel(args);
+		ft_tbldel(args, ft_tbllen(args));
 	if (dirs->right)
 		ls_recurse(info, dirs->right);
 	return (0);
@@ -98,7 +98,7 @@ int					ls_revrecurse(t_lsnfo *info, t_lnode *dirs)
 		return (-1);
 	main(3, args);
 	if (args)
-		ft_tbldel(args);
+		ft_tbldel(args, ft_tbllen(args));
 	if (dirs->left)
 		ls_recurse(info, dirs->left);
 	return (0);

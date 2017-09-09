@@ -6,12 +6,12 @@
 /*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 14:48:24 by rlutt             #+#    #+#             */
-/*   Updated: 2017/06/17 20:49:21 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/09/09 13:24:46 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incl/ft_ls.h"
-
+#include <unistd.h>
 int				ls_start(t_lsnfo *info)
 {
 	if (info->f_all && info->f_jhidden)

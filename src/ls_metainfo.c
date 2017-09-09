@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/17 15:04:53 by rlutt             #+#    #+#             */
-/*   Updated: 2017/06/17 16:18:25 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/09/09 13:27:37 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ void				ls_putmeta(t_lsnfo *info, char *name)
 		meta.pw = getpwuid(meta.st.st_uid);
 		meta.gp = getgrgid(meta.st.st_gid);
 		ls_putperm(&meta.st);
-		ft_printf("%3lld % 6s %7s % 6lld %.12s %s\n", meta.st.st_nlink,
+		ft_printf("%3lld % 6s %7s % 6lld %.12s %s", meta.st.st_nlink,
 		meta.pw->pw_name, meta.gp->gr_name, meta.st.st_size,
 		&meta.time[4], name);
 	}
@@ -110,5 +110,6 @@ void				ls_putmeta(t_lsnfo *info, char *name)
 		ft_printf("ft_ls: %s: No such file or directory\n", meta.fullpath);
 	if (S_ISLNK(meta.st.st_mode))
 		ls_putlink(meta.fullpath);
+	ft_putchar('\n');
 	ft_strdel(&meta.fullpath);
 }

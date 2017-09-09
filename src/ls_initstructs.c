@@ -6,7 +6,7 @@
 /*   By: rlutt <rlutt@student.42.us.org>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/06/16 16:32:17 by rlutt             #+#    #+#             */
-/*   Updated: 2017/06/17 14:59:16 by rlutt            ###   ########.fr       */
+/*   Updated: 2017/07/28 15:31:50 by rlutt            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void		ls_freetree(t_lnode **tree)
 void		ls_freeinfo(t_lsnfo *info)
 {
 	if (info->args)
-		ft_tbldel(info->args);
+		ft_tbldel(info->args, ft_tbllen(info->args));
 	if (info->files)
 		ls_freetree(&info->files);
 	if (info->dirs)
