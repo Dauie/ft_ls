@@ -59,7 +59,7 @@ void		ls_freetree(t_lnode **tree)
 void		ls_freeinfo(t_lsnfo *info)
 {
 	if (info->args)
-		ft_tbldel(info->args, ft_tbllen(info->args));
+		ft_tbldel(&info->args);
 	if (info->files)
 		ls_freetree(&info->files);
 	if (info->dirs)

@@ -75,7 +75,7 @@ int					ls_recurse(t_lsnfo *info, t_lnode *dirs)
 		return (-1);
 	main(3, args);
 	if (args)
-		ft_tbldel(args, ft_tbllen(args));
+		ft_tbldel(&args);
 	if (dirs->right)
 		ls_recurse(info, dirs->right);
 	return (0);
@@ -98,7 +98,7 @@ int					ls_revrecurse(t_lsnfo *info, t_lnode *dirs)
 		return (-1);
 	main(3, args);
 	if (args)
-		ft_tbldel(args, ft_tbllen(args));
+		ft_tbldel(&args);
 	if (dirs->left)
 		ls_recurse(info, dirs->left);
 	return (0);
