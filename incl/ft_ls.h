@@ -94,13 +94,13 @@ typedef struct		s_lsnfo
 	int				dircnt;
 	t_lnode			*files;
 	t_lnode			*dirs;
-	t_blean			f_stop;
-	t_blean			f_long;
-	t_blean			f_all;
-	t_blean			f_jhidden;
-	t_blean			f_rev;
-	t_blean			f_time;
-	t_blean			f_recur;
+	uint8_t			f_stop: 1;
+	uint8_t			f_long: 1;
+	uint8_t			f_all: 1;
+	uint8_t			f_jhidden: 1;
+	uint8_t			f_rev: 1;
+	uint8_t			f_time: 1;
+	uint8_t			f_recur: 1;
 }					t_lsnfo;
 
 int					main(int ac, char **av);
